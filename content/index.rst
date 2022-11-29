@@ -1,28 +1,35 @@
-LESSON NAME
-===========
+Developing Applications with the AMD ROCm Ecosystem
+===================================================
 
-Intro
+This training material is created by AMD in collaboration with ENCCS.
+It covers how to develop and port
+applications to run on AMD GPU and CPU hardware on top AMD-powered
+supercomputers. You will learn about the ROCm software
+development languages, libraries, and tools, as well as getting a
+developer’s view of the hardware that powers the system. The material
+focuses mostly on how to program applications to run on the GPU.
 
 
 
 .. prereq::
 
-   prerequisites
+   It is useful to have prior experience developing HPC applications,
+   and some understanding of recent HPC computer hardware and the
+   Linux operating system.
 
-
-
-.. csv-table::
-   :widths: auto
-   :delim: ;
-
-   20 min ; :doc:`filename`
 
 
 .. toctree::
    :maxdepth: 1
    :caption: The lesson
 
-
+   intro_hip
+   porting_hip
+   openMP
+   fortran
+   architecture
+   memory_model
+      
 .. toctree::
    :maxdepth: 1
    :caption: Reference

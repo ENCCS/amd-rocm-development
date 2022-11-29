@@ -28,7 +28,10 @@ focuses mostly on how to program applications to run on the GPU.
    openMP
    fortran
    architecture
+   mpi
    memory_model
+   hierarchical_roofline
+   affinity
       
 .. toctree::
    :maxdepth: 1

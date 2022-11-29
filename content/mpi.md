@@ -6,11 +6,16 @@
 
 `
 
-##### Check if UCX is built with ROCm?
+### Check if UCX is built with ROCm?
+
 `/global/software/openmpi/gcc/ucx/bin/ucx_info  -v`
-##### Get Ohio State University micro-benchmark code
+
+### Get Ohio State University micro-benchmark code
+
 `wget https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-7.0.tar.gz`
-##### Build micro-benchmark code
+
+### Build micro-benchmark code
+
 ```
 ./configure --prefix=${HOME}/osu-mb \
         CC=/global/software/openmpi/gcc/ompi/bin/mpicc \
@@ -20,7 +25,8 @@
 		make install
 		```
 
-##### Run benchmark
+### Run benchmark
+
 ```
 export HIP_VISIBLE_DEVICES=0,1
 mpirun –N 1 –n 2 ./osu-mb/mpi/pt2pt/osu_bw $((16*1024*1024)):$((16*1024*1024)) D D

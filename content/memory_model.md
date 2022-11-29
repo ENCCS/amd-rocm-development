@@ -25,7 +25,7 @@ on with the following steps:
      * comment out the malloc/frees instead and unset the HSA_XNACK variable or set it to 0
      * Test should pass
  
- ##### OpenMP Atomics
+### OpenMP Atomics
  
  The examples for this exercise are in `AMDTrainingExamples/atomics_openmp`.
  Set up your environment

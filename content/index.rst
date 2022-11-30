@@ -62,6 +62,22 @@ About the course
 See also
 --------
 
+- **LAB-NOTES: New “lab-notes” series on https://GPUOpen.com**
+   - Finite Difference Method – Laplacian Part 1 of a series
+   - AMD Matrix Cores – using the matrix math operations
+   - https://gpuopen.com/?s=lab+notes for all articles in the series
+   - Will be released on a two-week cadence
+- **Developer resources https://developer.amd.com**
+   - Videos on HIP and GPU programming
+- **ROCm documentation https://docs.amd.com**
+- **Quick start guides at Oak Ridge National Laboratory**
+   - https://docs.olcf.ornl.gov/systems/crusher_quick_start_guide.html
+   - https://docs.olcf.ornl.gov/systems/frontier_user_guide.html 
+- **Infinity Hub with many popular applications ported to AMD GPUs**
+   - https://www.amd.com/en/technologies/infinity-hub 
+- **AMD Cloud resources for trying out AMD systems**
+   - AMD Cloud Platform (ACP) - https://acp.amd.com
+   - AMD Accelerator Cloud (AAC) - https://www.amd.com/en/solutions/accelerated-computing
 
 
 

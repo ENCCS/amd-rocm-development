@@ -16,12 +16,18 @@ Load OpenMPI module
 
 Change mpicxx wrapper compiler to use hipcc
 `export OMPI_CXX=hipcc`
+
 Compile and run the code
-`mpicxx -o ./pt2pt ./pt2pt.cpp $mpirun -n 2 ./pt2pt`
+```
+mpicxx -o ./pt2pt ./pt2pt.cpp 
+$mpirun -n 2 ./pt2pt
+```
+
 You can get around the message "WARNING: There was an error initializing an OpenFabrics device" by telling OpenMPI to exclude openib:
 `mpirun -n 2 --mca btl ^'openib' ./pt2pt`
 
 ### OSU Bandwidth benchmark code
+
 Get a node allocation. Check what is available with sinfo. Then
 `salloc -N 1 --ntasks 8 –gpus=8 -p MI250`
 

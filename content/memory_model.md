@@ -4,7 +4,25 @@
 
 ## Exercises
 
-on with the following steps:
+### Managed Memory
+
+We’ll use the examples in the AMDTrainingExamples from before
+```
+tar -xzvf AMDTrainingExamples_ver0.2.tgz
+cd AMDTrainingExamples/ManagedMemory
+```
+The example from HIP-Examples/vectorAdd has been duplicated here as vectoradd_hip.cpp. A slightly cleaned up version is in vectoradd_hip1.cpp. Check that you have the original version running first.
+```
+module load rocm
+make vectoradd_hip1.exe
+./vectoradd_hip1.exe
+```
+The original tests should run. If you encounter difficulties, you can check what is happening by setting the following environment variables.
+```
+export LIBOMPTARGET_KERNEL_TRACE=1
+export LIBOMPTARGET_INFO=$((0x20 | 0x02 | 0x01 | 0x10))
+```
+Take that code and turn it into a managed memory version with the following steps:
 
 1.Globally change all “host” strings to “vector”
 2.Globally change all “device” strings to “vector”

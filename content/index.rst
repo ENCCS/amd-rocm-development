@@ -27,11 +27,13 @@ focuses mostly on how to program applications to run on the GPU.
    porting_hip
    openMP
    fortran
+   exercises-1
    architecture
    mpi
    memory_model
    hierarchical_roofline
    affinity
+   profilers
       
 .. toctree::
    :maxdepth: 1

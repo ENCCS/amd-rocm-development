@@ -4,7 +4,7 @@
 
 {download}`Download slides <slides/intro_rocprof.pdf>`
 
-## Omnitrace
+## Omnitrace and Omniperf
 
 {download}`Download slides <slides/intro_omnitools.pdf>`
 

@@ -5,12 +5,12 @@
 Full list of AMD GPU Accelerated Application listed in the 
 [GPU accelerated applications catalog](https://www.amd.com/system/files/documents/gpu-accelerated-applications-catalog.pdf)
 
-The list includes a lot of tools and libraries that can be useful to application developers. Here is the list of
-them from the catalog.
+The list includes a lot of tools and libraries that can be useful to application developers. 
+Here is the list of them from the catalog.
 
 Note that the level of support for AMD and by AMD varies a lot across the list.
 
-## Tools and Libraries
+### Tools and Libraries
 
 |Application Name             |Developer/Publisher |Description          |
 |------------------|------------------------------------------|---------------------|

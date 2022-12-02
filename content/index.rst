@@ -59,6 +59,52 @@ Who is the course for?
 About the course
 ----------------
 
+4 half-day schedule
+^^^^^^^^^^^^^^^^^^^
+
+**Day 1, 2022, 13:00-17:00 — Programming Environments**
+
+- HIP (George Markomanolis, AMD)
+- HIP Exercises on ACP cloud
+- Break
+- Hipify — porting applications to HIP
+- Hipify exercises
+- Getting Started with OpenMP® Offload Applications on AMD Accelerators (Jose Noudohouenou, AMD)
+- Break
+- OpenMP exercises
+- Developing Fortran Applications, HIPFort & Flang (Bob Robey and Brian Cornille, AMD)
+- Fortran exercises -- HIPFort
+
+**Day 2, 13:00-17:00 — Understanding the Hardware**
+
+- The AMD MI250X GPUs (George Markomanolis, AMD)
+- AMD Communication Fabrics (Mahdieh Ghazimirsaeed,AMD)
+- Memory Systems (Bob Robey, AMD) 
+- Break
+- Exercises – MPI Benchmark and Memory Systems
+- Roofline Model (Noah Wolfe, AMD) 
+- Affinity — Placement, Ordering and Binding (Gina Sitaraman and Bob Robey, AMD) 
+- Exercises -- Affinity
+
+**Day 3, 13:00-17:00 — Tools**
+
+- Profiler - rocprof
+- Exercises - rocprof
+- Profiler - Omnitrace
+- Break
+- Profiler - Omniperf
+- Break
+- Debuggers — rocgdb
+- Debugging - exercises
+
+**Day 4, 13:00-17:00 — Special Topics**
+
+- Using OpenMP® (Michael Klemm, AMD)
+- Break
+- Introduction to ML frameworks (Alessandro Fanfarillo, AMD)
+- Break
+- Discussion and feedback
+
 
 
 

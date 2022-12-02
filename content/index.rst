@@ -34,6 +34,9 @@ focuses mostly on how to program applications to run on the GPU.
    hierarchical_roofline
    affinity
    profilers
+   openMP_offload
+   ML_frameworks
+   summary
       
 .. toctree::
    :maxdepth: 1

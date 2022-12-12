@@ -1,6 +1,10 @@
 Developing Applications with the AMD ROCm Ecosystem
 ===================================================
 
+.. raw:: html
+    
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PL2GgjY1xUzfCLB3KRcMA3csgCW_BuHDqv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 This training material is created by AMD in collaboration with ENCCS.
 It covers how to develop and port
 applications to run on AMD GPU and CPU hardware on top AMD-powered

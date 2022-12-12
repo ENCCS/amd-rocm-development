@@ -4,13 +4,19 @@
 
 {download}`Download slides <slides/intro_rocprof.pdf>`
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jTA9WgrLh9U?start=1" title="Developing Applications with the AMD ROCm Ecosystem - Day 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Omnitrace and Omniperf
 
 {download}`Download slides <slides/intro_omnitools.pdf>`
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jTA9WgrLh9U?start=2032" title="Developing Applications with the AMD ROCm Ecosystem - Day 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## rocgdb
 
 {download}`Download slides <slides/ENCCS-AMD-rocgdb-Dec2022.pdf>`
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jTA9WgrLh9U?start=4811" title="Developing Applications with the AMD ROCm Ecosystem - Day 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Exercises
 

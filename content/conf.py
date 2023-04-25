@@ -21,7 +21,7 @@ project = "Developing Applications with the AMD ROCm Ecosystem"
 copyright = "2022, AMD"
 author = "The contributors"
 github_user = "ENCCS"
-github_repo_name = ""  # auto-detected from dirname if blank
+github_repo_name = "AMD-ROCm-development"  # auto-detected from dirname if blank
 github_version = "main"
 conf_py_path = "/content/"  # with leading and trailing slash
 
@@ -126,3 +126,12 @@ DIRECTIVES = [SignatureDirective, ParametersDirective, TypealongDirective]
 def setup(app):
     for obj in DIRECTIVES:
         app.add_directive(obj.cssname(), obj)
+
+
+import os
+if os.environ.get('GITHUB_REF', '') == 'refs/heads/main':
+    html_js_files = [
+        ('https://plausible.io/js/script.js', {"data-domain": "enccs.github.io/AMD-ROCm-development", "defer": "\
+defer"}),
+    ]
+        

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profiling and debugging &mdash; Developing Applications with the AMD ROCm Ecosystem  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_lesson.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script data-domain="enccs.github.io/amd-rocm-development" defer="defer" src="https://plausible.io/js/script.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="OpenMP Offload Programming" href="../openMP_offload/" />
+    <link rel="prev" title="Affinity — Placement, Ordering and Binding" href="../affinity/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Developing Applications with the AMD ROCm Ecosystem
+              <img src="../_static/ENCCS.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro_hip/">Introduction to HIP Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../porting_hip/">Porting Applications to HIP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openMP/">Getting Started with OpenMP® Offload Applications on AMD Accelerators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fortran/">Developing Fortran Applications: HIPFort, OpenMP®, and OpenACC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exercises-1/">Exercises</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mpi/">GPU-Aware MPI with ROCmTM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory_model/">AMD Node Memory Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hierarchical_roofline/">Hierarchical Roofline on AMD InstinctTM MI200 GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../affinity/">Affinity — Placement, Ordering and Binding</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Profiling and debugging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rocprof">rocprof</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#omnitrace-and-omniperf">Omnitrace and Omniperf</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rocgdb">rocgdb</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exercises">Exercises</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Rocprof</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#omnitrace">Omnitrace</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#dynamic-instrumentation">Dynamic instrumentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#binary-rewriting">Binary rewriting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#visualization">Visualization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-counters">Hardware counters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sampling">Sampling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kernel-timings">Kernel timings</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#omniperf">Omniperf</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../openMP_offload/">OpenMP Offload Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ML_frameworks/">Introduction to ML Frameworks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../summary/">Summary and outlook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quick-reference/">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/">Instructor’s guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Developing Applications with the AMD ROCm Ecosystem</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Profiling and debugging</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/ENCCS/AMD-ROCm-development/blob/main/content/profilers.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="profiling-and-debugging">
+<h1>Profiling and debugging<a class="headerlink" href="#profiling-and-debugging" title="Permalink to this heading"></a></h1>
+<section id="rocprof">
+<h2>rocprof<a class="headerlink" href="#rocprof" title="Permalink to this heading"></a></h2>
+<p><a class="reference download internal" download="" href="../_downloads/a6ba078ca099fffcc2f9e503358616ec/intro_rocprof.pdf"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">slides</span></code></a></p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jTA9WgrLh9U?start=1" title="Developing Applications with the AMD ROCm Ecosystem - Day 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</section>
+<section id="omnitrace-and-omniperf">
+<h2>Omnitrace and Omniperf<a class="headerlink" href="#omnitrace-and-omniperf" title="Permalink to this heading"></a></h2>
+<p><a class="reference download internal" download="" href="../_downloads/eba8e19de1c973cacefef85dad2d6f1f/intro_omnitools.pdf"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">slides</span></code></a></p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jTA9WgrLh9U?start=2032" title="Developing Applications with the AMD ROCm Ecosystem - Day 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</section>
+<section id="rocgdb">
+<h2>rocgdb<a class="headerlink" href="#rocgdb" title="Permalink to this heading"></a></h2>
+<p><a class="reference download internal" download="" href="../_downloads/ac0b2df9466b500111c4262589c081c7/ENCCS-AMD-rocgdb-Dec2022.pdf"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">slides</span></code></a></p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jTA9WgrLh9U?start=4811" title="Developing Applications with the AMD ROCm Ecosystem - Day 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading"></a></h2>
+<p>Reservation: enccs_3</p>
+<section id="id1">
+<h3>Rocprof<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<ul class="simple">
+<li><p>Get the exercise:</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">cp</span> <span class="pre">-r</span> <span class="pre">/global/training/enccs/exercises/HIP-Examples/mini-nbody/hip/</span> <span class="pre">.</span></code></p>
+<ul class="simple">
+<li><p>Compile and run the code</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">hip</span> 
+<span class="o">./</span><span class="n">HIP</span><span class="o">-</span><span class="n">nbody</span><span class="o">-</span><span class="n">orig</span><span class="o">.</span><span class="n">sh</span>
+<span class="n">hipcc</span> <span class="o">-</span><span class="n">I</span><span class="o">../</span> <span class="o">-</span><span class="n">DSHMOO</span> <span class="n">nbody</span><span class="o">-</span><span class="n">orig</span><span class="o">.</span><span class="n">cpp</span> <span class="o">-</span><span class="n">o</span> <span class="n">nbody</span><span class="o">-</span><span class="n">orig</span>
+<span class="mi">65536</span><span class="p">,</span> <span class="mf">161.871</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Check the file <code class="docutils literal notranslate"><span class="pre">HIP-nbody-orig.sh</span></code></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>cat HIP-nbody-orig.sh
+
+...
+
+EXE=nbody-orig
+...
+./$EXE 65536
+...
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>The binary is called <code class="docutils literal notranslate"><span class="pre">nbody-orig</span></code></p></li>
+<li><p>Use rocprof with <code class="docutils literal notranslate"><span class="pre">--stats</span></code></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rocprof</span> <span class="o">--</span><span class="n">stats</span> <span class="n">nbody</span><span class="o">-</span><span class="n">orig</span> <span class="mi">65536</span>
+
+<span class="n">RPL</span><span class="p">:</span> <span class="n">on</span> <span class="s1">&#39;221130_200946&#39;</span> <span class="kn">from</span> <span class="s1">&#39;/global/software/rocm/rocm-5.3.0&#39;</span> <span class="ow">in</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">profiling</span> <span class="s1">&#39;&quot;nbody-orig&quot; &quot;65536&quot;&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="nb">input</span> <span class="n">file</span> <span class="s1">&#39;&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">output</span> <span class="nb">dir</span> <span class="s1">&#39;/tmp/rpl_data_221130_200946_3670592&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">result</span> <span class="nb">dir</span> <span class="s1">&#39;/tmp/rpl_data_221130_200946_3670592/input_results_221130_200946&#39;</span>
+<span class="n">ROCProfiler</span><span class="p">:</span> <span class="nb">input</span> <span class="kn">from</span> <span class="s2">&quot;/tmp/rpl_data_221130_200946_3670592/input.xml&quot;</span>
+  <span class="mi">0</span> <span class="n">metrics</span>
+<span class="mi">65536</span><span class="p">,</span> <span class="mf">159.960</span>
+
+<span class="n">ROCPRofiler</span><span class="p">:</span> <span class="mi">10</span> <span class="n">contexts</span> <span class="n">collected</span><span class="p">,</span> <span class="n">output</span> <span class="n">directory</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">rpl_data_221130_200946_3670592</span><span class="o">/</span><span class="n">input_results_221130_200946</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.csv&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.stats.csv&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+
+</pre></div>
+</div>
+<p>Files with the prefix results are created</p>
+<ul class="simple">
+<li><p>Check the files results.csv</p></li>
+</ul>
+<p>You can se einformation for each kernel call with their duration</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">cat</span> <span class="n">results</span><span class="o">.</span><span class="n">csv</span>
+ 
+<span class="s2">&quot;Index&quot;</span><span class="p">,</span><span class="s2">&quot;KernelName&quot;</span><span class="p">,</span><span class="s2">&quot;gpu-id&quot;</span><span class="p">,</span><span class="s2">&quot;queue-id&quot;</span><span class="p">,</span><span class="s2">&quot;queue-index&quot;</span><span class="p">,</span><span class="s2">&quot;pid&quot;</span><span class="p">,</span><span class="s2">&quot;tid&quot;</span><span class="p">,</span><span class="s2">&quot;grd&quot;</span><span class="p">,</span><span class="s2">&quot;wgr&quot;</span><span class="p">,</span><span class="s2">&quot;lds&quot;</span><span class="p">,</span><span class="s2">&quot;scr&quot;</span><span class="p">,</span><span class="s2">&quot;arch_vgpr&quot;</span><span class="p">,</span><span class="s2">&quot;accum_vgpr&quot;</span><span class="p">,</span><span class="s2">&quot;sgpr&quot;</span><span class="p">,</span><span class="s2">&quot;wave_size&quot;</span><span class="p">,</span><span class="s2">&quot;sig&quot;</span><span class="p">,</span><span class="s2">&quot;obj&quot;</span><span class="p">,</span><span class="s2">&quot;DispatchNs&quot;</span><span class="p">,</span><span class="s2">&quot;BeginNs&quot;</span><span class="p">,</span><span class="s2">&quot;EndNs&quot;</span><span class="p">,</span><span class="s2">&quot;CompleteNs&quot;</span><span class="p">,</span><span class="s2">&quot;DurationNs&quot;</span>
+<span class="mi">0</span><span class="p">,</span><span class="s2">&quot;bodyForce(Body*, float, int) [clone .kd]&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">65536</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="s2">&quot;0x0&quot;</span><span class="p">,</span><span class="s2">&quot;0x7f7b27c04500&quot;</span><span class="p">,</span><span class="mi">1591372809346673</span><span class="p">,</span><span class="mi">1591372809872935</span><span class="p">,</span><span class="mi">1591372836189584</span><span class="p">,</span><span class="mi">1591372836215944</span><span class="p">,</span><span class="mi">26316649</span>
+<span class="mi">1</span><span class="p">,</span><span class="s2">&quot;bodyForce(Body*, float, int) [clone .kd]&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">65536</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="s2">&quot;0x0&quot;</span><span class="p">,</span><span class="s2">&quot;0x7f7b27c04500&quot;</span><span class="p">,</span><span class="mi">1591372836774261</span><span class="p">,</span><span class="mi">1591372837000949</span><span class="p">,</span><span class="mi">1591372863116796</span><span class="p">,</span><span class="mi">1591372863132315</span><span class="p">,</span><span class="mi">26115847</span>
+<span class="mi">2</span><span class="p">,</span><span class="s2">&quot;bodyForce(Body*, float, int) [clone .kd]&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">65536</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="s2">&quot;0x0&quot;</span><span class="p">,</span><span class="s2">&quot;0x7f7b27c04500&quot;</span><span class="p">,</span><span class="mi">1591372863652552</span><span class="p">,</span><span class="mi">1591372863877281</span><span class="p">,</span><span class="mi">1591372889980009</span><span class="p">,</span><span class="mi">1591372889994436</span><span class="p">,</span><span class="mi">26102728</span>
+<span class="mi">3</span><span class="p">,</span><span class="s2">&quot;bodyForce(Body*, float, int) [clone .kd]&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">65536</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="s2">&quot;0x0&quot;</span><span class="p">,</span><span class="s2">&quot;0x7f7b27c04500&quot;</span><span class="p">,</span><span class="mi">1591372890512133</span><span class="p">,</span><span class="mi">1591372890735562</span><span class="p">,</span><span class="mi">1591372916796147</span><span class="p">,</span><span class="mi">1591372916817087</span><span class="p">,</span><span class="mi">26060585</span>
+<span class="mi">4</span><span class="p">,</span><span class="s2">&quot;bodyForce(Body*, float, int) [clone .kd]&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">65536</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="s2">&quot;0x0&quot;</span><span class="p">,</span><span class="s2">&quot;0x7f7b27c04500&quot;</span><span class="p">,</span><span class="mi">1591372917332974</span><span class="p">,</span><span class="mi">1591372917556629</span><span class="p">,</span><span class="mi">1591372943652575</span><span class="p">,</span><span class="mi">1591372943667909</span><span class="p">,</span><span class="mi">26095946</span>
+<span class="mi">5</span><span class="p">,</span><span class="s2">&quot;bodyForce(Body*, float, int) [clone .kd]&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">65536</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="s2">&quot;0x0&quot;</span><span class="p">,</span><span class="s2">&quot;0x7f7b27c04500&quot;</span><span class="p">,</span><span class="mi">1591372944181896</span><span class="p">,</span><span class="mi">1591372944405378</span><span class="p">,</span><span class="mi">1591372970475883</span><span class="p">,</span><span class="mi">1591372970491020</span><span class="p">,</span><span class="mi">26070505</span>
+<span class="mi">6</span><span class="p">,</span><span class="s2">&quot;bodyForce(Body*, float, int) [clone .kd]&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">65536</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="s2">&quot;0x0&quot;</span><span class="p">,</span><span class="s2">&quot;0x7f7b27c04500&quot;</span><span class="p">,</span><span class="mi">1591372971009527</span><span class="p">,</span><span class="mi">1591372971233309</span><span class="p">,</span><span class="mi">1591372997318181</span><span class="p">,</span><span class="mi">1591372997339821</span><span class="p">,</span><span class="mi">26084872</span>
+<span class="mi">7</span><span class="p">,</span><span class="s2">&quot;bodyForce(Body*, float, int) [clone .kd]&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">14</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">65536</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="s2">&quot;0x0&quot;</span><span class="p">,</span><span class="s2">&quot;0x7f7b27c04500&quot;</span><span class="p">,</span><span class="mi">1591372997856209</span><span class="p">,</span><span class="mi">1591372998080743</span><span class="p">,</span><span class="mi">1591373024164495</span><span class="p">,</span><span class="mi">1591373024180993</span><span class="p">,</span><span class="mi">26083752</span>
+<span class="mi">8</span><span class="p">,</span><span class="s2">&quot;bodyForce(Body*, float, int) [clone .kd]&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">65536</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="s2">&quot;0x0&quot;</span><span class="p">,</span><span class="s2">&quot;0x7f7b27c04500&quot;</span><span class="p">,</span><span class="mi">1591373024701060</span><span class="p">,</span><span class="mi">1591373024924818</span><span class="p">,</span><span class="mi">1591373051023611</span><span class="p">,</span><span class="mi">1591373051040364</span><span class="p">,</span><span class="mi">26098793</span>
+<span class="mi">9</span><span class="p">,</span><span class="s2">&quot;bodyForce(Body*, float, int) [clone .kd]&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">18</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">3670615</span><span class="p">,</span><span class="mi">65536</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="s2">&quot;0x0&quot;</span><span class="p">,</span><span class="s2">&quot;0x7f7b27c04500&quot;</span><span class="p">,</span><span class="mi">1591373051559851</span><span class="p">,</span><span class="mi">1591373051782878</span><span class="p">,</span><span class="mi">1591373077878145</span><span class="p">,</span><span class="mi">1591373077902255</span><span class="p">,</span><span class="mi">26095267</span>
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Check the statistics result file, one line per kernel</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="n">results</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">csv</span>
+ 
+<span class="s2">&quot;Name&quot;</span><span class="p">,</span><span class="s2">&quot;Calls&quot;</span><span class="p">,</span><span class="s2">&quot;TotalDurationNs&quot;</span><span class="p">,</span><span class="s2">&quot;AverageNs&quot;</span><span class="p">,</span><span class="s2">&quot;Percentage&quot;</span>
+<span class="s2">&quot;bodyForce(Body*, float, int) [clone .kd]&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">261124944</span><span class="p">,</span><span class="mi">26112494</span><span class="p">,</span><span class="mf">100.0</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Profile the HIP calls with <code class="docutils literal notranslate"><span class="pre">--hip-trace</span></code></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rocprof</span> <span class="o">--</span><span class="n">stats</span> <span class="o">--</span><span class="n">hip</span><span class="o">-</span><span class="n">trace</span> <span class="n">nbody</span><span class="o">-</span><span class="n">orig</span> <span class="mi">65536</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">on</span> <span class="s1">&#39;221130_201416&#39;</span> <span class="kn">from</span> <span class="s1">&#39;/global/software/rocm/rocm-5.3.0&#39;</span> <span class="ow">in</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">profiling</span> <span class="s1">&#39;&quot;nbody-orig&quot; &quot;65536&quot;&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="nb">input</span> <span class="n">file</span> <span class="s1">&#39;&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">output</span> <span class="nb">dir</span> <span class="s1">&#39;/tmp/rpl_data_221130_201416_3670892&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">result</span> <span class="nb">dir</span> <span class="s1">&#39;/tmp/rpl_data_221130_201416_3670892/input_results_221130_201416&#39;</span>
+<span class="n">ROCTracer</span> <span class="p">(</span><span class="n">pid</span><span class="o">=</span><span class="mi">3670915</span><span class="p">):</span>
+    <span class="n">HIP</span><span class="o">-</span><span class="n">trace</span><span class="p">()</span>
+<span class="mi">65536</span><span class="p">,</span> <span class="mf">161.051</span>
+<span class="n">hsa_copy_deps</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">scan</span> <span class="n">ops</span> <span class="n">data</span> <span class="mi">29</span><span class="p">:</span><span class="mi">30</span>                                                                                                    <span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.copy_stats.csv&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+<span class="n">dump</span> <span class="n">json</span> <span class="mi">19</span><span class="p">:</span><span class="mi">20</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.json&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.hip_stats.csv&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+<span class="n">dump</span> <span class="n">json</span> <span class="mi">51</span><span class="p">:</span><span class="mi">52</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.json&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.stats.csv&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+<span class="n">dump</span> <span class="n">json</span> <span class="mi">9</span><span class="p">:</span><span class="mi">10</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.json&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+</pre></div>
+</div>
+<p>Now we have new files with the <code class="docutils literal notranslate"><span class="pre">hip</span></code> in their name like below, checl the file <code class="docutils literal notranslate"><span class="pre">results.hip_stats.csv</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">cat</span> <span class="n">results</span><span class="o">.</span><span class="n">hip_stats</span><span class="o">.</span><span class="n">csv</span>
+<span class="s2">&quot;Name&quot;</span><span class="p">,</span><span class="s2">&quot;Calls&quot;</span><span class="p">,</span><span class="s2">&quot;TotalDurationNs&quot;</span><span class="p">,</span><span class="s2">&quot;AverageNs&quot;</span><span class="p">,</span><span class="s2">&quot;Percentage&quot;</span>
+<span class="s2">&quot;hipMemcpy&quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">486845521</span><span class="p">,</span><span class="mi">24342276</span><span class="p">,</span><span class="mf">99.89375113830629</span>
+<span class="s2">&quot;hipLaunchKernel&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">467008</span><span class="p">,</span><span class="mi">46700</span><span class="p">,</span><span class="mf">0.09582337501179998</span>
+<span class="s2">&quot;hipMalloc&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">30570</span><span class="p">,</span><span class="mi">30570</span><span class="p">,</span><span class="mf">0.006272527610042495</span>
+<span class="s2">&quot;hipFree&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">14210</span><span class="p">,</span><span class="mi">14210</span><span class="p">,</span><span class="mf">0.0029156891507590398</span>
+<span class="s2">&quot;__hipPushCallConfiguration&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">3510</span><span class="p">,</span><span class="mi">351</span><span class="p">,</span><span class="mf">0.0007202018943817191</span>
+<span class="s2">&quot;__hipPopCallConfiguration&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">2520</span><span class="p">,</span><span class="mi">252</span><span class="p">,</span><span class="mf">0.0005170680267355932</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Profile also the HSA API with the <code class="docutils literal notranslate"><span class="pre">--hsa-trace</span></code></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rocprof</span> <span class="o">--</span><span class="n">stats</span> <span class="o">--</span><span class="n">hip</span><span class="o">-</span><span class="n">trace</span> <span class="o">--</span><span class="n">hsa</span><span class="o">-</span><span class="n">trace</span> <span class="n">nbody</span><span class="o">-</span><span class="n">orig</span> <span class="mi">65536</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">on</span> <span class="s1">&#39;221130_201737&#39;</span> <span class="kn">from</span> <span class="s1">&#39;/global/software/rocm/rocm-5.3.0&#39;</span> <span class="ow">in</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">profiling</span> <span class="s1">&#39;&quot;nbody-orig&quot; &quot;65536&quot;&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="nb">input</span> <span class="n">file</span> <span class="s1">&#39;&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">output</span> <span class="nb">dir</span> <span class="s1">&#39;/tmp/rpl_data_221130_201737_3671219&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">result</span> <span class="nb">dir</span> <span class="s1">&#39;/tmp/rpl_data_221130_201737_3671219/input_results_221130_201737&#39;</span>
+<span class="n">ROCProfiler</span><span class="p">:</span> <span class="nb">input</span> <span class="kn">from</span> <span class="s2">&quot;/tmp/rpl_data_221130_201737_3671219/input.xml&quot;</span>
+  <span class="mi">0</span> <span class="n">metrics</span>
+<span class="n">ROCTracer</span> <span class="p">(</span><span class="n">pid</span><span class="o">=</span><span class="mi">3671242</span><span class="p">):</span>
+    <span class="n">HSA</span><span class="o">-</span><span class="n">trace</span><span class="p">()</span>
+    <span class="n">HSA</span><span class="o">-</span><span class="n">activity</span><span class="o">-</span><span class="n">trace</span><span class="p">()</span>
+    <span class="n">HIP</span><span class="o">-</span><span class="n">trace</span><span class="p">()</span>
+<span class="mi">65536</span><span class="p">,</span> <span class="mf">155.978</span>
+
+<span class="n">ROCPRofiler</span><span class="p">:</span> <span class="mi">10</span> <span class="n">contexts</span> <span class="n">collected</span><span class="p">,</span> <span class="n">output</span> <span class="n">directory</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">rpl_data_221130_201737_3671219</span><span class="o">/</span><span class="n">input_results_221130_201737</span>
+<span class="n">hsa_copy_deps</span><span class="p">:</span> <span class="mi">1</span>
+<span class="n">scan</span> <span class="n">hsa</span> <span class="n">API</span> <span class="n">data</span> <span class="mi">5953</span><span class="p">:</span><span class="mi">5954</span>                                                                                                    <span class="n">hsa_copy_deps</span><span class="p">:</span> <span class="mi">0</span>
+<span class="n">scan</span> <span class="n">hip</span> <span class="n">API</span> <span class="n">data</span> <span class="mi">51</span><span class="p">:</span><span class="mi">52</span>                                                                                                    <span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.csv&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.stats.csv&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+<span class="n">dump</span> <span class="n">json</span> <span class="mi">9</span><span class="p">:</span><span class="mi">10</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.json&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.hsa_stats.csv&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+<span class="n">dump</span> <span class="n">json</span> <span class="mi">5963</span><span class="p">:</span><span class="mi">5964</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.json&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.copy_stats.csv&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+<span class="n">dump</span> <span class="n">json</span> <span class="mi">19</span><span class="p">:</span><span class="mi">20</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.json&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.hip_stats.csv&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+<span class="n">dump</span> <span class="n">json</span> <span class="mi">51</span><span class="p">:</span><span class="mi">52</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/results.json&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>See the content of the file <code class="docutils literal notranslate"><span class="pre">results.hsa_stats.csv</span></code></p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="n">results</span><span class="o">.</span><span class="n">hsa_stats</span><span class="o">.</span><span class="n">csv</span>
+<span class="s2">&quot;Name&quot;</span><span class="p">,</span><span class="s2">&quot;Calls&quot;</span><span class="p">,</span><span class="s2">&quot;TotalDurationNs&quot;</span><span class="p">,</span><span class="s2">&quot;AverageNs&quot;</span><span class="p">,</span><span class="s2">&quot;Percentage&quot;</span>
+<span class="s2">&quot;hsa_signal_wait_scacquire&quot;</span><span class="p">,</span><span class="mi">50</span><span class="p">,</span><span class="mi">264955082</span><span class="p">,</span><span class="mi">5299101</span><span class="p">,</span><span class="mf">82.69977799679005</span>
+<span class="s2">&quot;hsa_queue_create&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">39868279</span><span class="p">,</span><span class="mi">39868279</span><span class="p">,</span><span class="mf">12.443987854568068</span>
+<span class="s2">&quot;hsa_amd_memory_async_copy&quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">4917141</span><span class="p">,</span><span class="mi">245857</span><span class="p">,</span><span class="mf">1.5347751249357586</span>
+<span class="s2">&quot;hsa_amd_signal_async_handler&quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">4262555</span><span class="p">,</span><span class="mi">213127</span><span class="p">,</span><span class="mf">1.3304608069344652</span>
+<span class="s2">&quot;hsa_signal_store_screlease&quot;</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">1945998</span><span class="p">,</span><span class="mi">48649</span><span class="p">,</span><span class="mf">0.60739956889069</span>
+<span class="s2">&quot;hsa_amd_memory_lock_to_pool&quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">1418202</span><span class="p">,</span><span class="mi">70910</span><span class="p">,</span><span class="mf">0.44265990170591873</span>
+<span class="s2">&quot;hsa_amd_memory_unlock&quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">723957</span><span class="p">,</span><span class="mi">36197</span><span class="p">,</span><span class="mf">0.22596691758953363</span>
+<span class="s2">&quot;hsa_agent_get_info&quot;</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">671007</span><span class="p">,</span><span class="mi">8387</span><span class="p">,</span><span class="mf">0.20943976433821374</span>
+<span class="s2">&quot;hsa_amd_memory_pool_allocate&quot;</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">597926</span><span class="p">,</span><span class="mi">119585</span><span class="p">,</span><span class="mf">0.18662917157599068</span>
+<span class="s2">&quot;hsa_system_get_info&quot;</span><span class="p">,</span><span class="mi">5005</span><span class="p">,</span><span class="mi">367139</span><span class="p">,</span><span class="mi">73</span><span class="p">,</span><span class="mf">0.11459419296574767</span>
+<span class="s2">&quot;hsa_executable_load_agent_code_object&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">216629</span><span class="p">,</span><span class="mi">108314</span><span class="p">,</span><span class="mf">0.0676158768966984</span>
+<span class="s2">&quot;hsa_executable_freeze&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">156380</span><span class="p">,</span><span class="mi">78190</span><span class="p">,</span><span class="mf">0.048810504729771616</span>
+<span class="s2">&quot;hsa_amd_agents_allow_access&quot;</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">89470</span><span class="p">,</span><span class="mi">22367</span><span class="p">,</span><span class="mf">0.02792605101785821</span>
+<span class="s2">&quot;hsa_signal_create&quot;</span><span class="p">,</span><span class="mi">57</span><span class="p">,</span><span class="mi">51500</span><span class="p">,</span><span class="mi">903</span><span class="p">,</span><span class="mf">0.016074568318092074</span>
+<span class="s2">&quot;hsa_code_object_reader_create_from_memory&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">20940</span><span class="p">,</span><span class="mi">10470</span><span class="p">,</span><span class="mf">0.006535950690890253</span>
+<span class="s2">&quot;hsa_isa_get_info_alt&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">18180</span><span class="p">,</span><span class="mi">9090</span><span class="p">,</span><span class="mf">0.005674478680056581</span>
+<span class="s2">&quot;hsa_signal_load_relaxed&quot;</span><span class="p">,</span><span class="mi">236</span><span class="p">,</span><span class="mi">17880</span><span class="p">,</span><span class="mi">75</span><span class="p">,</span><span class="mf">0.005580840418009442</span>
+<span class="s2">&quot;hsa_system_get_major_extension_table&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">14920</span><span class="p">,</span><span class="mi">4973</span><span class="p">,</span><span class="mf">0.004656942899144344</span>
+<span class="s2">&quot;hsa_amd_profiling_get_async_copy_time&quot;</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">13430</span><span class="p">,</span><span class="mi">335</span><span class="p">,</span><span class="mf">0.004191872864310224</span>
+<span class="s2">&quot;hsa_executable_create_alt&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">9030</span><span class="p">,</span><span class="mi">4515</span><span class="p">,</span><span class="mf">0.0028185116876188626</span>
+<span class="s2">&quot;hsa_amd_memory_pool_get_info&quot;</span><span class="p">,</span><span class="mi">106</span><span class="p">,</span><span class="mi">7570</span><span class="p">,</span><span class="mi">71</span><span class="p">,</span><span class="mf">0.002362805478989456</span>
+<span class="s2">&quot;hsa_amd_agent_iterate_memory_pools&quot;</span><span class="p">,</span><span class="mi">27</span><span class="p">,</span><span class="mi">7440</span><span class="p">,</span><span class="mi">275</span><span class="p">,</span><span class="mf">0.0023222288987690297</span>
+<span class="s2">&quot;hsa_amd_memory_pool_free&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">4710</span><span class="p">,</span><span class="mi">4710</span><span class="p">,</span><span class="mf">0.0014701207141400712</span>
+<span class="s2">&quot;hsa_executable_get_symbol_by_name&quot;</span><span class="p">,</span><span class="mi">15</span><span class="p">,</span><span class="mi">3599</span><span class="p">,</span><span class="mi">239</span><span class="p">,</span><span class="mf">0.0011233470170255023</span>
+<span class="s2">&quot;hsa_queue_add_write_index_screlease&quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">3500</span><span class="p">,</span><span class="mi">175</span><span class="p">,</span><span class="mf">0.0010924463905499467</span>
+<span class="s2">&quot;hsa_amd_profiling_get_dispatch_time&quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">3110</span><span class="p">,</span><span class="mi">155</span><span class="p">,</span><span class="mf">0.0009707166498886669</span>
+<span class="s2">&quot;hsa_signal_silent_store_relaxed&quot;</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">2800</span><span class="p">,</span><span class="mi">70</span><span class="p">,</span><span class="mf">0.0008739571124399574</span>
+<span class="s2">&quot;hsa_amd_agent_memory_pool_get_info&quot;</span><span class="p">,</span><span class="mi">19</span><span class="p">,</span><span class="mi">2490</span><span class="p">,</span><span class="mi">131</span><span class="p">,</span><span class="mf">0.0007771975749912477</span>
+<span class="s2">&quot;hsa_iterate_agents&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2250</span><span class="p">,</span><span class="mi">1125</span><span class="p">,</span><span class="mf">0.0007022869653535371</span>
+<span class="s2">&quot;hsa_queue_load_read_index_relaxed&quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">2240</span><span class="p">,</span><span class="mi">112</span><span class="p">,</span><span class="mf">0.0006991656899519659</span>
+<span class="s2">&quot;hsa_signal_destroy&quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">2190</span><span class="p">,</span><span class="mi">109</span><span class="p">,</span><span class="mf">0.0006835593129441095</span>
+<span class="s2">&quot;hsa_queue_load_read_index_scacquire&quot;</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">1790</span><span class="p">,</span><span class="mi">89</span><span class="p">,</span><span class="mf">0.0005587082968812585</span>
+<span class="s2">&quot;hsa_executable_symbol_get_info&quot;</span><span class="p">,</span><span class="mi">30</span><span class="p">,</span><span class="mi">1540</span><span class="p">,</span><span class="mi">51</span><span class="p">,</span><span class="mf">0.00048067641184197657</span>
+<span class="s2">&quot;hsa_amd_profiling_async_copy_enable&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">440</span><span class="p">,</span><span class="mi">440</span><span class="p">,</span><span class="mf">0.00013733611766913615</span>
+<span class="s2">&quot;hsa_agent_iterate_isas&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">400</span><span class="p">,</span><span class="mi">400</span><span class="p">,</span><span class="mf">0.00012485101606285104</span>
+<span class="s2">&quot;hsa_amd_profiling_set_profiler_enabled&quot;</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">140</span><span class="p">,</span><span class="mi">140</span><span class="p">,</span><span class="mf">4.3697855621997866e-05</span>
+<span class="s2">&quot;hsa_dispatch&quot;</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.0</span>
+
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Download the results.json file on your laptop</p></li>
+</ul>
+<p>From your laptop:
+<code class="docutils literal notranslate"><span class="pre">scp</span> <span class="pre">-i</span> <span class="pre">id_ed25519</span> <span class="pre">-P</span> <span class="pre">8560</span> <span class="pre">enccs_tr_0&#64;89.202.73.189:/path/results.json</span> <span class="pre">.</span></code></p>
+<ul class="simple">
+<li><p>Visit the web page:</p></li>
+</ul>
+<p>https://ui.perfetto.dev/</p>
+<ul class="simple">
+<li><p>Click on the top left menu, “Open Trace File on th eleft top”</p></li>
+<li><p>Select the file results.json</p></li>
+</ul>
+<p>Zoom in/out: W/S
+Move left/right: A/D</p>
+<p><img alt="" src="https://i.imgur.com/ZKgVBKI.png" /></p>
+<p>Read about the counters: <code class="docutils literal notranslate"> <span class="pre">vim</span> <span class="pre">/global/software/rocm/rocm-5.3.0/lib/rocprofiler/gfx_metrics.xml</span></code></p>
+<ul class="simple">
+<li><p>Create a file with the contents:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="n">rocprof_counters</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">pmc</span> <span class="p">:</span> <span class="n">Wavefronts</span> <span class="n">VALUInsts</span> <span class="n">VFetchInsts</span> <span class="n">VWriteInsts</span> <span class="n">VALUUtilization</span> <span class="n">VALUBusy</span> <span class="n">WriteSize</span>
+<span class="n">pmc</span> <span class="p">:</span> <span class="n">SALUInsts</span> <span class="n">SFetchInsts</span> <span class="n">LDSInsts</span> <span class="n">FlatLDSInsts</span> <span class="n">GDSInsts</span> <span class="n">SALUBusy</span> <span class="n">FetchSize</span>
+<span class="n">pmc</span> <span class="p">:</span> <span class="n">L2CacheHit</span> <span class="n">MemUnitBusy</span> <span class="n">MemUnitStalled</span> <span class="n">WriteUnitStalled</span> <span class="n">ALUStalledByLDS</span> <span class="n">LDSBankConflict</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Execute with using the counters</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">rocprof</span> <span class="o">--</span><span class="n">timestamp</span> <span class="n">on</span> <span class="o">-</span><span class="n">i</span> <span class="n">rocprof_counters</span><span class="o">.</span><span class="n">txt</span>  <span class="n">nbody</span><span class="o">-</span><span class="n">orig</span> <span class="mi">65536</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">on</span> <span class="s1">&#39;221130_205737&#39;</span> <span class="kn">from</span> <span class="s1">&#39;/global/software/rocm/rocm-5.3.0&#39;</span> <span class="ow">in</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">profiling</span> <span class="s1">&#39;&quot;nbody-orig&quot; &quot;65536&quot;&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="nb">input</span> <span class="n">file</span> <span class="s1">&#39;rocprof_counters.txt&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">output</span> <span class="nb">dir</span> <span class="s1">&#39;/tmp/rpl_data_221130_205737_3673574&#39;</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">result</span> <span class="nb">dir</span> <span class="s1">&#39;/tmp/rpl_data_221130_205737_3673574/input0_results_221130_205737&#39;</span>
+<span class="n">ROCProfiler</span><span class="p">:</span> <span class="nb">input</span> <span class="kn">from</span> <span class="s2">&quot;/tmp/rpl_data_221130_205737_3673574/input0.xml&quot;</span>
+  <span class="n">gpu_index</span> <span class="o">=</span>
+  <span class="n">kernel</span> <span class="o">=</span>
+  <span class="nb">range</span> <span class="o">=</span>
+  <span class="mi">7</span> <span class="n">metrics</span>
+    <span class="n">Wavefronts</span><span class="p">,</span> <span class="n">VALUInsts</span><span class="p">,</span> <span class="n">VFetchInsts</span><span class="p">,</span> <span class="n">VWriteInsts</span><span class="p">,</span> <span class="n">VALUUtilization</span><span class="p">,</span> <span class="n">VALUBusy</span><span class="p">,</span> <span class="n">WriteSize</span>
+<span class="mi">65536</span><span class="p">,</span> <span class="mf">155.389</span>
+
+<span class="n">ROCPRofiler</span><span class="p">:</span> <span class="mi">10</span> <span class="n">contexts</span> <span class="n">collected</span><span class="p">,</span> <span class="n">output</span> <span class="n">directory</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">rpl_data_221130_205737_3673574</span><span class="o">/</span><span class="n">input0_results_221130_205737</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">result</span> <span class="nb">dir</span> <span class="s1">&#39;/tmp/rpl_data_221130_205737_3673574/input1_results_221130_205737&#39;</span>
+<span class="n">ROCProfiler</span><span class="p">:</span> <span class="nb">input</span> <span class="kn">from</span> <span class="s2">&quot;/tmp/rpl_data_221130_205737_3673574/input1.xml&quot;</span>
+  <span class="n">gpu_index</span> <span class="o">=</span>
+  <span class="n">kernel</span> <span class="o">=</span>
+  <span class="nb">range</span> <span class="o">=</span>
+  <span class="mi">7</span> <span class="n">metrics</span>
+    <span class="n">SALUInsts</span><span class="p">,</span> <span class="n">SFetchInsts</span><span class="p">,</span> <span class="n">LDSInsts</span><span class="p">,</span> <span class="n">FlatLDSInsts</span><span class="p">,</span> <span class="n">GDSInsts</span><span class="p">,</span> <span class="n">SALUBusy</span><span class="p">,</span> <span class="n">FetchSize</span>
+<span class="mi">65536</span><span class="p">,</span> <span class="mf">156.996</span>
+
+<span class="n">ROCPRofiler</span><span class="p">:</span> <span class="mi">10</span> <span class="n">contexts</span> <span class="n">collected</span><span class="p">,</span> <span class="n">output</span> <span class="n">directory</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">rpl_data_221130_205737_3673574</span><span class="o">/</span><span class="n">input1_results_221130_205737</span>
+<span class="n">RPL</span><span class="p">:</span> <span class="n">result</span> <span class="nb">dir</span> <span class="s1">&#39;/tmp/rpl_data_221130_205737_3673574/input2_results_221130_205737&#39;</span>
+<span class="n">ROCProfiler</span><span class="p">:</span> <span class="nb">input</span> <span class="kn">from</span> <span class="s2">&quot;/tmp/rpl_data_221130_205737_3673574/input2.xml&quot;</span>
+  <span class="n">gpu_index</span> <span class="o">=</span>
+  <span class="n">kernel</span> <span class="o">=</span>
+  <span class="nb">range</span> <span class="o">=</span>
+  <span class="mi">6</span> <span class="n">metrics</span>
+    <span class="n">L2CacheHit</span><span class="p">,</span> <span class="n">MemUnitBusy</span><span class="p">,</span> <span class="n">MemUnitStalled</span><span class="p">,</span> <span class="n">WriteUnitStalled</span><span class="p">,</span> <span class="n">ALUStalledByLDS</span><span class="p">,</span> <span class="n">LDSBankConflict</span>
+<span class="mi">65536</span><span class="p">,</span> <span class="mf">155.264</span>
+
+<span class="n">ROCPRofiler</span><span class="p">:</span> <span class="mi">10</span> <span class="n">contexts</span> <span class="n">collected</span><span class="p">,</span> <span class="n">output</span> <span class="n">directory</span> <span class="o">/</span><span class="n">tmp</span><span class="o">/</span><span class="n">rpl_data_221130_205737_3673574</span><span class="o">/</span><span class="n">input2_results_221130_205737</span>
+<span class="n">File</span> <span class="s1">&#39;/global/home/gmarko/HIP-Examples/mini-nbody/hip/rocprof_counters.csv&#39;</span> <span class="ow">is</span> <span class="n">generating</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Contents of the rocprof_counters.csv file</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cat</span> <span class="n">rocprof_counters</span><span class="o">.</span><span class="n">csv</span>
+<span class="n">Index</span><span class="p">,</span><span class="n">KernelName</span><span class="p">,</span><span class="n">gpu</span><span class="o">-</span><span class="nb">id</span><span class="p">,</span><span class="n">queue</span><span class="o">-</span><span class="nb">id</span><span class="p">,</span><span class="n">queue</span><span class="o">-</span><span class="n">index</span><span class="p">,</span><span class="n">pid</span><span class="p">,</span><span class="n">tid</span><span class="p">,</span><span class="n">grd</span><span class="p">,</span><span class="n">wgr</span><span class="p">,</span><span class="n">lds</span><span class="p">,</span><span class="n">scr</span><span class="p">,</span><span class="n">arch_vgpr</span><span class="p">,</span><span class="n">accum_vgpr</span><span class="p">,</span><span class="n">sgpr</span><span class="p">,</span><span class="n">wave_size</span><span class="p">,</span><span class="n">sig</span><span class="p">,</span><span class="n">obj</span><span class="p">,</span><span class="n">Wavefronts</span><span class="p">,</span><span class="n">VALUInsts</span><span class="p">,</span><span class="n">VFetchInsts</span><span class="p">,</span><span class="n">VWriteInsts</span><span class="p">,</span><span class="n">VALUUtilization</span><span class="p">,</span><span class="n">VALUBusy</span><span class="p">,</span><span class="n">WriteSize</span><span class="p">,</span><span class="n">SALUInsts</span><span class="p">,</span><span class="n">SFetchInsts</span><span class="p">,</span><span class="n">LDSInsts</span><span class="p">,</span><span class="n">FlatLDSInsts</span><span class="p">,</span><span class="n">GDSInsts</span><span class="p">,</span><span class="n">SALUBusy</span><span class="p">,</span><span class="n">FetchSize</span><span class="p">,</span><span class="n">L2CacheHit</span><span class="p">,</span><span class="n">MemUnitBusy</span><span class="p">,</span><span class="n">MemUnitStalled</span><span class="p">,</span><span class="n">WriteUnitStalled</span><span class="p">,</span><span class="n">ALUStalledByLDS</span><span class="p">,</span><span class="n">LDSBankConflict</span><span class="p">,</span><span class="n">DispatchNs</span><span class="p">,</span><span class="n">BeginNs</span><span class="p">,</span><span class="n">EndNs</span><span class="p">,</span><span class="n">CompleteNs</span>
+<span class="mi">0</span><span class="p">,</span><span class="s2">&quot;bodyForce(Body*, float, int) [clone .kd]&quot;</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3673711</span><span class="p">,</span><span class="mi">3673711</span><span class="p">,</span><span class="mi">65536</span><span class="p">,</span><span class="mi">256</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">16</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mh">0x0</span><span class="p">,</span><span class="mh">0x7f2b4d282500</span><span class="p">,</span><span class="mf">2048.0000000000</span><span class="p">,</span><span class="mf">1212443.0000000000</span><span class="p">,</span><span class="mf">12.0000000000</span><span class="p">,</span><span class="mf">12.0000000000</span><span class="p">,</span><span class="mf">100.0000000000</span><span class="p">,</span><span class="mf">68.1476813493</span><span class="p">,</span><span class="mf">7872.0000000000</span><span class="p">,</span><span class="mf">131228.5000000000</span><span class="p">,</span><span class="mf">65553.0000000000</span><span class="p">,</span><span class="mf">0.0000000000</span><span class="p">,</span><span class="mf">0.0000000000</span><span class="p">,</span><span class="mf">0.0000000000</span><span class="p">,</span><span class="mf">6.3483148000</span><span class="p">,</span><span class="mf">9429.1875000000</span><span class="p">,</span><span class="mf">96.5684331443</span><span class="p">,</span><span class="mf">0.0250344612</span><span class="p">,</span><span class="mf">0.0044357832</span><span class="p">,</span><span class="mf">0.0102024550</span><span class="p">,</span><span class="mf">0.0000000000</span><span class="p">,</span><span class="mf">0.0000000000</span><span class="p">,</span><span class="mi">1594244102859719</span><span class="p">,</span><span class="mi">1594244111978746</span><span class="p">,</span><span class="mi">1594244138305243</span><span class="p">,</span><span class="mi">1594244138330792</span>
+<span class="o">...</span>
+</pre></div>
+</div>
+</section>
+<section id="omnitrace">
+<h3>Omnitrace<a class="headerlink" href="#omnitrace" title="Permalink to this heading"></a></h3>
+<p>We have made special builds of the Omnitools, omnitrace and omniperf for use in the exercises</p>
+<ul class="simple">
+<li><p>Load Omnitrace</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">use</span> <span class="o">--</span><span class="n">append</span> <span class="o">/</span><span class="k">global</span><span class="o">/</span><span class="n">training</span><span class="o">/</span><span class="n">enccs</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span>
+<span class="n">module</span> <span class="n">load</span> <span class="n">omnitrace</span><span class="o">/</span><span class="mf">1.7.3</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Reserve a GPU</p></li>
+<li><p>Check the various options and their values and also a second command for description</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">srun</span> <span class="pre">-n</span> <span class="pre">1</span> <span class="pre">--gpus</span> <span class="pre">1</span> <span class="pre">omnitrace-avail</span> <span class="pre">--categories</span> <span class="pre">omnitrace</span></code>
+<code class="docutils literal notranslate"><span class="pre">srun</span> <span class="pre">-n</span> <span class="pre">1</span> <span class="pre">--gpus</span> <span class="pre">1</span> <span class="pre">omnitrace-avail</span> <span class="pre">--categories</span> <span class="pre">omnitrace</span> <span class="pre">--brief</span> <span class="pre">--description</span></code></p>
+<ul class="simple">
+<li><p>Create an Omnitrace configuration file with description per option</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">srun</span> <span class="pre">-n</span> <span class="pre">1</span> <span class="pre">omnitrace-avail</span> <span class="pre">-G</span> <span class="pre">omnitrace_all.cfg</span> <span class="pre">--all</span></code></p>
+<ul class="simple">
+<li><p>Declare to use this configuration file: <code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">OMNITRACE_CONFIG_FILE=/path/omnitrace_all.cfg</span></code></p></li>
+<li><p>Get the file <code class="docutils literal notranslate"><span class="pre">cp</span> <span class="pre">/global/software/rocm/rocm-5.3.0/share/hip/samples/2_Cookbook/0_MatrixTranspose/MatrixTranspose.cpp</span> <span class="pre">.</span></code></p></li>
+<li><p>Compile <code class="docutils literal notranslate"> <span class="pre">hipcc</span> <span class="pre">-o</span> <span class="pre">MatrixTranspose</span> <span class="pre">MatrixTranspose.cpp</span></code></p></li>
+<li><p>Execute the binary: <code class="docutils literal notranslate"><span class="pre">time</span> <span class="pre">srun</span> <span class="pre">-n</span> <span class="pre">1</span> <span class="pre">--gpus</span> <span class="pre">1</span> <span class="pre">./MatrixTranspose</span></code> and check the duration</p></li>
+</ul>
+<section id="dynamic-instrumentation">
+<h4>Dynamic instrumentation<a class="headerlink" href="#dynamic-instrumentation" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p>Execute dynamic instrumentation: <code class="docutils literal notranslate"><span class="pre">time</span> <span class="pre">srun</span> <span class="pre">–n</span> <span class="pre">1</span> <span class="pre">–gpus</span> <span class="pre">1</span> <span class="pre">omnitrace</span> <span class="pre">--</span> <span class="pre">./MatrixTranspose</span></code> and check the duration</p></li>
+<li><p>Check what the binary calls and gets instrumented: <code class="docutils literal notranslate"><span class="pre">nm</span> <span class="pre">--demangle</span> <span class="pre">MatrixTranspose</span> <span class="pre">|</span> <span class="pre">egrep</span> <span class="pre">-i</span> <span class="pre">'</span> <span class="pre">(t|u)</span> <span class="pre">'</span></code></p></li>
+<li><p>Available functions to instrument: <code class="docutils literal notranslate"><span class="pre">srun</span> <span class="pre">-n</span> <span class="pre">1</span> <span class="pre">--gpus</span> <span class="pre">1</span> <span class="pre">omnitrace</span> <span class="pre">-v</span> <span class="pre">-1</span> <span class="pre">--simulate</span> <span class="pre">--print-available</span> <span class="pre">functions</span> <span class="pre">--</span> <span class="pre">./MatrixTranspose</span></code></p>
+<ul>
+<li><p>the simulate option means that it will not execute the binary</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="binary-rewriting">
+<h4>Binary rewriting<a class="headerlink" href="#binary-rewriting" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p>Binary rewriting: <code class="docutils literal notranslate"><span class="pre">srun</span> <span class="pre">-n</span> <span class="pre">1</span> <span class="pre">--gpus</span> <span class="pre">1</span> <span class="pre">omnitrace</span> <span class="pre">-v</span> <span class="pre">-1</span> <span class="pre">--print-available</span> <span class="pre">functions</span> <span class="pre">-o</span> <span class="pre">matrix.inst</span> <span class="pre">--</span> <span class="pre">./MatrixTranspose</span></code></p>
+<ul>
+<li><p>We created a new instrumented binary called matrix.inst</p></li>
+</ul>
+</li>
+<li><p>Executing the new instrumented binary: <code class="docutils literal notranslate"><span class="pre">time</span> <span class="pre">srun</span> <span class="pre">-n</span> <span class="pre">1</span> <span class="pre">--gpus</span> <span class="pre">1</span> <span class="pre">./matrix.inst</span></code> and check the duration</p></li>
+<li><p>See the list of the instrumented GPU calls: <code class="docutils literal notranslate"><span class="pre">cat</span> <span class="pre">omnitrace-matrix.inst-output/TIMESTAMP/roctracer.txt</span></code></p></li>
+</ul>
+</section>
+<section id="visualization">
+<h4>Visualization<a class="headerlink" href="#visualization" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p>Copy the <code class="docutils literal notranslate"><span class="pre">perfetto-trace.proto</span></code> to your laptop, open the web page https://ui.perfetto.dev/ click to open the trace and select the file</p></li>
+</ul>
+</section>
+<section id="hardware-counters">
+<h4>Hardware counters<a class="headerlink" href="#hardware-counters" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p>See a list of all the counters: <code class="docutils literal notranslate"><span class="pre">srun</span> <span class="pre">-n</span> <span class="pre">1</span> <span class="pre">--gpus</span> <span class="pre">1</span> <span class="pre">omnitrace-avail</span> <span class="pre">--all</span></code></p></li>
+<li><p>Declare in your configuration file: <code class="docutils literal notranslate"><span class="pre">OMNITRACE_ROCM_EVENTS</span> <span class="pre">=</span> <span class="pre">GPUBusy,Wavefronts,VALUBusy,L2CacheHit,MemUnitBusy</span></code></p></li>
+<li><p>Execute: <code class="docutils literal notranslate"><span class="pre">srun</span> <span class="pre">-n</span> <span class="pre">1</span> <span class="pre">--gpus</span> <span class="pre">1</span> <span class="pre">./matrix.inst</span></code> and copy the perfetto file and visualize</p></li>
+</ul>
+</section>
+<section id="sampling">
+<h4>Sampling<a class="headerlink" href="#sampling" title="Permalink to this heading"></a></h4>
+<p>Activate in your configuration file <code class="docutils literal notranslate"><span class="pre">OMNITRACE_USE_SAMPLING</span> <span class="pre">=</span> <span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">OMNITRACE_SAMPLING_FREQ</span> <span class="pre">=</span> <span class="pre">100</span></code>, execute and visualize</p>
+</section>
+<section id="kernel-timings">
+<h4>Kernel timings<a class="headerlink" href="#kernel-timings" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p>Open the file <code class="docutils literal notranslate"><span class="pre">omnitrace-binary-output/timestamp/wall_clock.txt</span></code>  (replace binary and timestamp with your information)</p></li>
+<li><p>In order to see the kernels gathered in your configuration file, make sure that <code class="docutils literal notranslate"><span class="pre">OMNITRACE_USE_TIMEMORY</span> <span class="pre">=</span> <span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">OMNITRACE_FLAT_PROFILE</span> <span class="pre">=</span> <span class="pre">true</span></code>, execute the code and open again the file <code class="docutils literal notranslate"><span class="pre">omnitrace-binary-output/timestamp/wall_clock.txt</span></code></p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="omniperf">
+<h3>Omniperf<a class="headerlink" href="#omniperf" title="Permalink to this heading"></a></h3>
+<p>We have made special builds of the Omnitools, omnitrace and omniperf for use in the exercises</p>
+<ul class="simple">
+<li><p>Load Omniperf</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">use</span> <span class="o">--</span><span class="n">append</span> <span class="o">/</span><span class="k">global</span><span class="o">/</span><span class="n">training</span><span class="o">/</span><span class="n">enccs</span><span class="o">/</span><span class="n">modules</span><span class="o">/</span>
+<span class="n">module</span> <span class="n">load</span> <span class="n">omniperf</span><span class="o">/</span><span class="mf">1.0.4</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Reserve a GPU, compile the exercise and execute Omniperf, observe how many times the code is executed</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">salloc</span> <span class="o">-</span><span class="n">N1</span> <span class="o">-</span><span class="n">p</span> <span class="n">MI250</span> <span class="o">--</span><span class="n">reservation</span><span class="o">=</span><span class="n">enccs_3</span> <span class="o">--</span><span class="n">gpus</span><span class="o">=</span><span class="mi">1</span> <span class="o">--</span><span class="n">time</span> <span class="mi">00</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">00</span>
+<span class="n">cp</span> <span class="o">/</span><span class="k">global</span><span class="o">/</span><span class="n">training</span><span class="o">/</span><span class="n">enccs</span><span class="o">/</span><span class="n">omniperf</span><span class="o">/</span><span class="mf">1.0.4</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">sample</span><span class="o">/</span><span class="n">vcopy</span><span class="o">.</span><span class="n">cpp</span> <span class="o">.</span>
+<span class="n">hipcc</span> <span class="o">-</span><span class="n">o</span> <span class="n">vcopy</span> <span class="n">vcopy</span><span class="o">.</span><span class="n">cpp</span>
+<span class="n">srun</span> <span class="o">-</span><span class="n">n</span> <span class="mi">1</span> <span class="o">--</span><span class="n">gpus</span> <span class="mi">1</span> <span class="n">omniperf</span> <span class="n">profile</span> <span class="o">-</span><span class="n">n</span> <span class="n">vcopy_all</span> <span class="o">--</span> <span class="o">./</span><span class="n">vcopy</span> <span class="mi">1048576</span> <span class="mi">256</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">srun</span> <span class="pre">-n</span> <span class="pre">1</span> <span class="pre">--gpus</span> <span class="pre">1</span> <span class="pre">omniperf</span> <span class="pre">profile</span> <span class="pre">-h</span></code> to see all the options</p></li>
+<li><p>Now is created a workload in the directory workloads with the name vcopy_all (the argument of the -n). So, we can analyze it</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="n">srun</span> <span class="o">-</span><span class="n">n</span> <span class="mi">1</span> <span class="o">--</span><span class="n">gpus</span> <span class="mi">1</span> <span class="n">omniperf</span> <span class="n">analyze</span> <span class="o">-</span><span class="n">p</span> <span class="n">workloads</span><span class="o">/</span><span class="n">vcopy_all</span><span class="o">/</span><span class="n">mi200</span><span class="o">/</span> <span class="o">&amp;&gt;</span> <span class="n">vcopy_analyze</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p>There is no need for srun to analyze but we want to avoid everybody to use the login node. Explore the file <code class="docutils literal notranslate"><span class="pre">vcopy_analyze.txt</span></code></p>
+<ul class="simple">
+<li><p>We can select specific IP Blocks, like:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">srun</span> <span class="o">-</span><span class="n">n</span> <span class="mi">1</span> <span class="o">--</span><span class="n">gpus</span> <span class="mi">1</span> <span class="n">omniperf</span> <span class="n">analyze</span> <span class="o">-</span><span class="n">p</span> <span class="n">workloads</span><span class="o">/</span><span class="n">vcopy_all</span><span class="o">/</span><span class="n">mi200</span><span class="o">/</span> <span class="o">-</span><span class="n">b</span> <span class="mf">7.1.2</span>
+</pre></div>
+</div>
+<p>But you need to know the code of the IP Block</p>
+<ul class="simple">
+<li><p>If you have installed Omniperf on your laptop (no ROCm required for analysis) then you can download the data and execute:</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">omniperf</span> <span class="n">analyze</span> <span class="o">-</span><span class="n">p</span> <span class="n">workloads</span><span class="o">/</span><span class="n">vcopy_all</span><span class="o">/</span><span class="n">mi200</span><span class="o">/</span> <span class="o">--</span><span class="n">gui</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Open the web page: http://172.21.7.117:8050/</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../affinity/" class="btn btn-neutral float-left" title="Affinity — Placement, Ordering and Binding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../openMP_offload/" class="btn btn-neutral float-right" title="OpenMP Offload Programming" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, AMD.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

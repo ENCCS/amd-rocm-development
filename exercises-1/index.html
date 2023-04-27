@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercises &mdash; Developing Applications with the AMD ROCm Ecosystem  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_lesson.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script data-domain="enccs.github.io/amd-rocm-development" defer="defer" src="https://plausible.io/js/script.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Architecture" href="../architecture/" />
+    <link rel="prev" title="Developing Fortran Applications: HIPFort, OpenMP®, and OpenACC" href="../fortran/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Developing Applications with the AMD ROCm Ecosystem
+              <img src="../_static/ENCCS.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro_hip/">Introduction to HIP Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../porting_hip/">Porting Applications to HIP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openMP/">Getting Started with OpenMP® Offload Applications on AMD Accelerators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fortran/">Developing Fortran Applications: HIPFort, OpenMP®, and OpenACC</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Exercises</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hip-exercises">HIP exercises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hipify-example">Hipify example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#openmp-programming">OpenMP Programming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hipfort-example">HIPFort Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mpi/">GPU-Aware MPI with ROCmTM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory_model/">AMD Node Memory Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hierarchical_roofline/">Hierarchical Roofline on AMD InstinctTM MI200 GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../affinity/">Affinity — Placement, Ordering and Binding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../profilers/">Profiling and debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openMP_offload/">OpenMP Offload Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ML_frameworks/">Introduction to ML Frameworks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../summary/">Summary and outlook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quick-reference/">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/">Instructor’s guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Developing Applications with the AMD ROCm Ecosystem</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Exercises</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/ENCCS/AMD-ROCm-development/blob/main/content/exercises-1.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="exercises">
+<h1>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading"></a></h1>
+<section id="hip-exercises">
+<h2>HIP exercises<a class="headerlink" href="#hip-exercises" title="Permalink to this heading"></a></h2>
+<p><strong>Log onto ACP/ACC</strong></p>
+<p>Usually you would use <code class="docutils literal notranslate"><span class="pre">salloc</span> <span class="pre">-N</span> <span class="pre">1</span> <span class="pre">-p</span> <span class="pre">MI250</span> <span class="pre">--gpus=8</span> <span class="pre">–exclusive</span></code> to get exclusive use of a node. But that can be wasteful when resources are in high demand.</p>
+<p>For these exercises, we’ll use either batch commands or short interactive sessions. For batch sessions, create a script that starts with</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#SBATCH -p MI250</span>
+<span class="c1">#SBATCH -N 1</span>
+<span class="c1">#SBATCH --gpus=1</span>
+<span class="c1">#SBATCH --reservation=enccs //depending on the workshop day enccs_2, enccs_3, enccs_4</span>
+&lt;serial<span class="w"> </span>commands&gt;
+&lt;srun<span class="w"> </span><span class="k">for</span><span class="w"> </span>parallel<span class="w"> </span>commands&gt;
+...
+</pre></div>
+</div>
+<p>For an interactive session, we’ll use “salloc -N 1 -p MI250 –gpus=1 -t 10” or “salloc -N 1 -p MI210 –gpus=1 -t 10” for these exercises so that the nodes can be shared. Check what is available with “sinfo” and look for a partition with nodes in the “idle” state.
+Load environment with module command. ROCm is needed for all and cmake is needed for openmp-helloworld
+module load rocm/5.3.0 cmake</p>
+<p>If you are only getting some of the GPUs on a node, the GPU detection will fail in some cases in the rocm_agent_enumerator utility. The problem is caused by Slurm removing permissions for the GPUs that you don’t have permission to use. That causes the rocm_agent_enumerator utility to crash when it queries the GPU to get the type. There are a couple of workarounds. You can set HCC_AMDGPU_TARGET to bypass GPU detection. The MI250 GPU is gfx90a. You can get your GPU type with rocminfo.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">HCC_AMDGPU_TARGET</span><span class="o">=</span>gfx90a
+</pre></div>
+</div>
+<p>You can also use the rocminfo command to autodetect the GPU type:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">HCC_AMDGPU_TARGET</span><span class="o">=</span><span class="sb">`</span>rocminfo<span class="w"> </span><span class="p">|</span>grep<span class="w"> </span>-m<span class="w"> </span><span class="m">1</span><span class="w"> </span>-E<span class="w"> </span>gfx<span class="o">[</span>^0<span class="o">]{</span><span class="m">1</span><span class="o">}</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;s/ *Name: *\(gfx[0-9,a-f]*\) *$/\1/&#39;</span><span class="sb">`</span>
+</pre></div>
+</div>
+<p>For compilation with hipcc, use the clang compiler option –offload-arch.</p>
+<p>ROCM_GPU= <code class="docutils literal notranslate"><span class="pre">rocminfo</span> <span class="pre">|grep</span> <span class="pre">-m</span> <span class="pre">1</span> <span class="pre">-E</span> <span class="pre">gfx[^0]{1}</span> <span class="pre">|</span> <span class="pre">sed</span> <span class="pre">-e</span> <span class="pre">'s/</span> <span class="pre">*Name:</span> <span class="pre">*\(gfx[0-9,a-f]*\)</span> <span class="pre">*$/\1/'</span></code>
+hipcc –offload-arch=${ROCM_GPU} …</p>
+<p>Get HIP-Examples</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ROCm-Developer-Tools/HIP-Examples
+<span class="nb">cd</span><span class="w"> </span>HIP-Examples/vectorAdd
+</pre></div>
+</div>
+<p>Examine files here – README, Makefile and vectoradd_hip.cpp
+Notice that Makefile requires HIP_PATH to be set. Check with <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">show</span> <span class="pre">rocm/5.3.0</span></code> or <code class="docutils literal notranslate"><span class="pre">echo</span> <span class="pre">$HIP_PATH</span></code>
+Also, the Makefile builds and runs the code. We’ll do the steps separately</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>vectoradd_hip.exe
+make<span class="w"> </span><span class="nb">test</span>
+</pre></div>
+</div>
+<p>Now let’s try the cuda-stream example. This example is from the original McCalpin code as ported to CUDA by Nvidia. This version has been ported to use HIP. See add4 for another similar stream example.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>cuda-stream
+make
+./stream
+</pre></div>
+</div>
+<p>Note that it builds with the hipcc compiler. You should get a report of the Copy, Scale, Add, and Triad cases.</p>
+<p>The batch version of this would be:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#SBATCH -p MI250</span>
+<span class="c1">#SBATCH -N 1</span>
+<span class="c1">#SBATCH --gpus=1</span>
+<span class="c1">#SBATCH –t 10</span>
+<span class="c1">#SBATCH --reservation=enccs //depending on the workshop day enccs_2, enccs_3, enccs_4</span>
+
+module<span class="w"> </span>load<span class="w"> </span>rocm/5.3.0
+
+<span class="c1"># If only getting some of the GPUs on a node, the GPU detection will fail</span>
+<span class="c1">#   in some cases in rocm_agent_enumerator utility. Set HCC_AMDGPU_TARGET to</span>
+<span class="c1">#   bypass GPU detection</span>
+<span class="c1"># Setting explicit GPU target</span>
+<span class="c1">#export HCC_AMDGPU_TARGET=gfx90a</span>
+<span class="c1"># Using rocminfo to determine which GPU to build code for</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">HCC_AMDGPU_TARGET</span><span class="o">=</span><span class="sb">`</span>rocminfo<span class="w"> </span><span class="p">|</span>grep<span class="w"> </span>-m<span class="w"> </span><span class="m">1</span><span class="w"> </span>-E<span class="w"> </span>gfx<span class="o">[</span>^0<span class="o">]{</span><span class="m">1</span><span class="o">}</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;s/ *Name: *\(gfx[0-9,a-f]*\) *$/\1/&#39;</span><span class="sb">`</span>
+
+<span class="nb">cd</span><span class="w"> </span>HIP-Examples/vectorAdd
+make<span class="w"> </span>vectoradd_hip.exe
+make<span class="w"> </span><span class="nb">test</span>
+<span class="nb">cd</span><span class="w"> </span>../..
+
+<span class="nb">cd</span><span class="w"> </span>HIP-Examples/cuda-stream
+make
+./stream
+<span class="nb">cd</span><span class="w"> </span>../..
+</pre></div>
+</div>
+<p>Save these commands in a batch file, hip_batch.sh, and then submit it to the queue with <code class="docutils literal notranslate"><span class="pre">sbatch</span> <span class="pre">&lt;</span> <span class="pre">hip_batch.sh</span></code>. Check for status of job with <code class="docutils literal notranslate"><span class="pre">squeue</span> <span class="pre">-u</span> <span class="pre">&lt;username&gt;</span></code>. The output will come out in a file named <code class="docutils literal notranslate"><span class="pre">slurm-&lt;job-id&gt;.out</span></code>. Note that with some versions of ROCm, the GPU type detection using rocm_agent_enumerator will fail if all the GPUs are not allocated to the job.</p>
+<p>You can try all the examples with <code class="docutils literal notranslate"><span class="pre">./test_all.sh</span></code>. Or pick one of the examples from the test_all.sh script and follow the steps given there.</p>
+</section>
+<section id="hipify-example">
+<h2>Hipify example<a class="headerlink" href="#hipify-example" title="Permalink to this heading"></a></h2>
+<p>We’ll use the same HIP-Examples that were downloaded for the first exercise
+Get a node allocation. Check what is available with sinfo. Then <code class="docutils literal notranslate"><span class="pre">salloc</span> <span class="pre">-N</span> <span class="pre">1</span> <span class="pre">-p</span> <span class="pre">MI250</span> <span class="pre">--gpus=1</span> <span class="pre">–t</span> <span class="pre">10</span></code> or <code class="docutils literal notranslate"><span class="pre">salloc</span> <span class="pre">-N</span> <span class="pre">1</span> <span class="pre">-p</span> <span class="pre">MI210</span> <span class="pre">--gpus=1</span> <span class="pre">–t</span> <span class="pre">10</span></code>. A batch version of the example is also shown.</p>
+<p><strong>Hipify Programming (20 mins)</strong></p>
+<p><em>Exercise 1: Manual code conversion from CUDA to HIP (10 min)</em></p>
+<p>Choose one or more of the CUDA samples in <code class="docutils literal notranslate"><span class="pre">HIP-Examples/mini-nbody/cuda</span></code> repository and manually convert them to HIP. Some code suggestions include <code class="docutils literal notranslate"><span class="pre">mini-nbody/cuda/&lt;nbody-block.cu,nbody-orig.cu,nbody-soa.cu&gt;</span></code></p>
+<ol class="arabic simple">
+<li><p>The CUDA samples are located in HIP-Examples/mini-nbody/cuda</p></li>
+<li><p>Manually convert the source code of your choice to HIP</p></li>
+<li><p>You’ll want to compile on the node you’ve been allocated so that hipcc will choose the correct GPU architecture.</p></li>
+</ol>
+<p><em>Exercise 2: Code conversion from CUDA to HIP using HIPify tools (10 min)</em></p>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">hipify-perl.sh</span> <span class="pre">-inplace</span> <span class="pre">-print-stats</span></code> to “hipify” the CUDA samples you used to manually convert to HIP in Exercise 1. <code class="docutils literal notranslate"><span class="pre">hipify-perl.sh</span></code> is in <code class="docutils literal notranslate"><span class="pre">$ROCM_PATH/hip/bin</span></code> directory and should be in your path.</p>
+<p>a.	For example, if helloworld.cu is a CUDA program, run <code class="docutils literal notranslate"><span class="pre">hipify-perl.sh</span> <span class="pre">-inplace</span> <span class="pre">–print-stats</span> <span class="pre">helloworld.cu</span></code>. You’ll see a <code class="docutils literal notranslate"><span class="pre">helloworld.cu.prehip</span></code> file that is the original and the <code class="docutils literal notranslate"><span class="pre">helloworld.cu</span></code> file now has HIP calls.
+b.	You’ll also see statistics of HIP APIs that were converted. For example, for <code class="docutils literal notranslate"><span class="pre">hipify-perl.sh</span> <span class="pre">-inplace</span> <span class="pre">-print-stats</span> <span class="pre">nbody-orig.cu</span></code>:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>HIPIFY<span class="o">]</span><span class="w"> </span>info:<span class="w"> </span>file<span class="w"> </span><span class="s1">&#39;nbody-orig.cu&#39;</span><span class="w"> </span>statistics:
+<span class="w">  </span>CONVERTED<span class="w"> </span>refs<span class="w"> </span>count:<span class="w"> </span><span class="m">7</span>
+<span class="w">  </span>TOTAL<span class="w"> </span>lines<span class="w"> </span>of<span class="w"> </span>code:<span class="w"> </span><span class="m">91</span>
+<span class="w">  </span>WARNINGS:<span class="w"> </span><span class="m">0</span>
+<span class="o">[</span>HIPIFY<span class="o">]</span><span class="w"> </span>info:<span class="w"> </span>CONVERTED<span class="w"> </span>refs<span class="w"> </span>by<span class="w"> </span>names:
+<span class="w">  </span><span class="nv">cudaFree</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span>hipFree:<span class="w"> </span><span class="m">1</span>
+<span class="w">  </span><span class="nv">cudaMalloc</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span>hipMalloc:<span class="w"> </span><span class="m">1</span>
+<span class="w">  </span><span class="nv">cudaMemcpyDeviceToHost</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span>hipMemcpyDeviceToHost:<span class="w"> </span><span class="m">1</span>
+<span class="w">  </span><span class="nv">cudaMemcpyHostToDevice</span><span class="w"> </span><span class="o">=</span>&gt;<span class="w"> </span>hipMemcpyHostToDevice:<span class="w"> </span><span class="m">1</span>
+</pre></div>
+</div>
+<p>c.	Compile the HIP programs. Fix any compiler issues, for example, if there was something that didn’t hipify correctly. Be on the lookout for hard-coded Nvidia specific things like warp sizes and PTX.
+For the nbody-orig.cu code, compile with <code class="docutils literal notranslate"><span class="pre">hipcc</span> <span class="pre">-DSHMOO</span> <span class="pre">-I</span> <span class="pre">../</span> <span class="pre">nbody-orig.cu</span> <span class="pre">-o</span> <span class="pre">nbody-orig</span></code>.  The <code class="docutils literal notranslate"><span class="pre">#define</span> <span class="pre">SHMOO</span></code> fixes some timer printouts. Add <code class="docutils literal notranslate"><span class="pre">--offload-arch=&lt;gpu_type&gt;</span></code> to specify the GPU type and avoid the autodetection issues when running on a single GPU on a node.
+d.	Run the programs.
+A batch version of Exercise 2 is:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#SBATCH -p MI250</span>
+<span class="c1">#SBATCH -N 1</span>
+<span class="c1">#SBATCH --gpus=1</span>
+<span class="c1">#SBATCH -t 10</span>
+<span class="c1">#SBATCH --reservation=enccs //depending on the workshop day enccs_2, enccs_3, enccs_4</span>
+
+module<span class="w"> </span>load<span class="w"> </span>rocm/5.3.0
+
+<span class="c1"># Setting explicit GPU target</span>
+<span class="c1">#export ROCM_GPU=gfx90a</span>
+<span class="c1"># Using rocminfo to determine which GPU to build code for</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROCM_GPU</span><span class="o">=</span><span class="sb">`</span>rocminfo<span class="w"> </span><span class="p">|</span>grep<span class="w"> </span>-m<span class="w"> </span><span class="m">1</span><span class="w"> </span>-E<span class="w"> </span>gfx<span class="o">[</span>^0<span class="o">]{</span><span class="m">1</span><span class="o">}</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;s/ *Name: *\(gfx[0-9,a-f]*\) *$/\1/&#39;</span><span class="sb">`</span>
+
+hipify-perl.sh<span class="w"> </span>-inplace<span class="w"> </span>-print-stats<span class="w"> </span>nbody-orig.cu
+<span class="nb">cd</span><span class="w"> </span>HIP-Examples/mini-nbody/cuda
+hipcc<span class="w"> </span>--offload-arch<span class="o">=</span><span class="si">${</span><span class="nv">ROCM_GPU</span><span class="si">}</span><span class="w"> </span>-DSHMOO<span class="w"> </span>-I<span class="w"> </span>../<span class="w"> </span>nbody-orig.cu<span class="w"> </span>-o<span class="w"> </span>nbody-orig
+./nbody-orig
+<span class="nb">cd</span><span class="w"> </span>../..
+</pre></div>
+</div>
+<p><strong>Notes:</strong></p>
+<ul class="simple">
+<li><p>Hipify tools do not check correctness</p></li>
+<li><p>Hipify-perl can’t handle library calls, hipify-clang can handle library calls</p></li>
+<li><p>hipconv</p></li>
+</ul>
+</section>
+<section id="openmp-programming">
+<h2>OpenMP Programming<a class="headerlink" href="#openmp-programming" title="Permalink to this heading"></a></h2>
+<p><em>Exercise: Getting Started with OpenMP on AMD Accelerators</em></p>
+<p>The goal of this exercise is to offload simple OpenMP codelets onto AMD GPU. By default, GNU compilers are used to build these mini-apps that can then be executed on host (CPU). So:</p>
+<p>a.	The codelet source codes are located in “exercises/openmp_samples”. Copy the codelet repository to your local directory and let’s consider the saxpy (C) and Fibonacci (Fortran) examples.</p>
+<p>b.	You will instruct the compiler to offload certain code sections (loops) within these min-apps</p>
+<p>a.	For the C/C++ codelet (saxpy example), in “codelet.c” file:</p>
+<ul class="simple">
+<li><p>replace <code class="docutils literal notranslate"><span class="pre">#pragma</span> <span class="pre">omp</span> <span class="pre">parallel</span> <span class="pre">for</span> <span class="pre">simd</span></code> by <code class="docutils literal notranslate"><span class="pre">#pragma</span> <span class="pre">omp</span> <span class="pre">target</span> <span class="pre">teams</span> <span class="pre">distribute</span> <span class="pre">parallel</span> <span class="pre">for</span> <span class="pre">simd</span> <span class="pre">map(to:</span> <span class="pre">x[0:n],y[0:n])</span> <span class="pre">map(from:</span> <span class="pre">z[0:n])</span></code>.</p></li>
+</ul>
+<p>b.	For the Fortran codelet (Fibonacci example) in “freduce.f90” file:</p>
+<ul class="simple">
+<li><p>Add the following instruction just before the beginning of the innermost loop: <code class="docutils literal notranslate"><span class="pre">!$OMP</span> <span class="pre">TARGET</span> <span class="pre">TEAMS</span> <span class="pre">DISTRIBUTE</span> <span class="pre">PARALLEL</span> <span class="pre">DO</span> <span class="pre">SIMD</span> <span class="pre">REDUCTION(+sum2)</span> <span class="pre">MAP(TO:array(1:10))</span></code></p></li>
+<li><p>Add the following instruction right after the end of the innermost loop code section: <code class="docutils literal notranslate"><span class="pre">!$OMP</span> <span class="pre">END</span> <span class="pre">TARGET</span> <span class="pre">TEAMS</span> <span class="pre">DISTRIBUTE</span> <span class="pre">PARALLEL</span> <span class="pre">DO</span> <span class="pre">SIMD</span></code></p></li>
+</ul>
+<p>c.	In “Makefile”, replace “gcc” (gfortran) by “amdclang” (amdflang) and add <code class="docutils literal notranslate"><span class="pre">--offload-arch=gfx90a</span></code> to compiler flags to enable offloading on AMD GPU MI200.
+d.	Build and then run these codelets on an ACP node using an input size of your choice like 123456789.
+e.	While running one of these codelets, open another terminal and “ssh” to the ACP node you are working on. Then, run “watch -n 0.1 rocm-smi” command line from that terminal to visualize GPU activities.
+f.	Next, run the codelet on your preferred GPU device. For example, to execute on GPU ID #2, set the following environment variable: “export ROCR_VISIBLE_DEVICES=2” then run the code
+g.	While running this code on your preferred GPU device, open another terminal then run <code class="docutils literal notranslate"><span class="pre">watch</span> <span class="pre">-n</span> <span class="pre">0.1</span> <span class="pre">rocm-smi</span></code> command line to visualize GPU activities</p>
+<p>h.	Profile the codelet and then compare output by setting:</p>
+<ul class="simple">
+<li><p>a.	<code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">LIBOMPTARGET_KERNEL_TRACE=1</span></code></p></li>
+<li><p>b.	<code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">LIBOMPTARGET_KERNEL_TRACE=2</span></code></p></li>
+</ul>
+<p><strong>Note:</strong></p>
+<ul class="simple">
+<li><p>rocminfo can be used to get target architecture information.</p></li>
+<li><p>If for any reason <code class="docutils literal notranslate"><span class="pre">--offload-arch=gfx90a</span></code> is not working as expected, consider using alternative flags: <code class="docutils literal notranslate"><span class="pre">-fopenmp-targets=amdgcn-amd-amdhsa</span> <span class="pre">-Xopenmp-target=amdgcn-amd-amdhsa</span> <span class="pre">-march=gfx90a</span></code> to enable offloading on AMD GPU MI200.</p></li>
+</ul>
+</section>
+<section id="hipfort-example">
+<h2>HIPFort Example<a class="headerlink" href="#hipfort-example" title="Permalink to this heading"></a></h2>
+<p>Get a node allocation. Check what is available with sinfo. Then <code class="docutils literal notranslate"><span class="pre">salloc</span> <span class="pre">-N</span> <span class="pre">1</span> <span class="pre">-p</span> <span class="pre">MI250</span> <span class="pre">--gpus=1</span></code> or <code class="docutils literal notranslate"><span class="pre">salloc</span> <span class="pre">-N</span> <span class="pre">1</span> <span class="pre">-p</span> <span class="pre">MI210</span> <span class="pre">--gpus=1</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span> <span class="pre">rocm</span></code></p>
+<p>Check if hipfort is installed – /opt/rocm&lt;-version&gt;/bin/hipfort</p>
+<p>Install HIPFort:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">HIPFORT_INSTALL_DIR=</span></code>pwd<code class="docutils literal notranslate"><span class="pre">/hipfort</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/ROCmSoftwarePlatform/hipfort</span> <span class="pre">hipfort-source</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mkdir</span> <span class="pre">hipfort-build;</span> <span class="pre">cd</span> <span class="pre">hipfort-build</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">-DHIPFORT_INSTALL_DIR=${HIPFORT_INSTALL_DIR}</span> <span class="pre">../hipfort-source</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install</span></code></p></li>
+</ul>
+<p>Try example from source directory:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">PATH=${HIPFORT_INSTALL_DIR}/bin:$PATH</span></code></p></li>
+<li><p>``ROCM_GPU=`rocminfo |grep -m 1 -E gfx[^0]{1} | sed -e ‘s/ *Name: <em>//’ -e ‘s/[[:space:]]</em>$//’```</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">hipfort-source/test/f2003/vecadd</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hipfc</span> <span class="pre">-v</span> <span class="pre">--offload-arch=${ROCM_GPU}</span> <span class="pre">hip_implementation.cpp</span> <span class="pre">main.f03</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">./a.out</span></code></p></li>
+</ul>
+<p>Examine the code in hip_implementation.cpp The kernel code is in C and has a wrapper so it can be called from Fortran. Now look at the code in main.f03. The Fortran code declares an interface to the GPU kernel routine and invokes it with a call statement. Note that the hip calls can be made from the Fortran code courtesy of the wrappers provided by hipfort.</p>
+<p>Example with Fortran 2008 interface – on your own:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">hipfort-source/test/f2003/vecadd</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hipfc</span> <span class="pre">-v</span> <span class="pre">--offload-arch=${ROCM_GPU}</span> <span class="pre">hip_implementation.cpp</span> <span class="pre">main.f08</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">./a.out</span></code></p></li>
+</ul>
+<p><strong>Fortran with OpenMP offloading or OpenACC</strong></p>
+<p>Get the training examples – AMDTrainingExamples_ver0.2.tgz. Pick one of the examples in PragmaExamples for Fortran in OpenMP or OpenACC. We’ll use the new Siemen’s compiler.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>tar<span class="w"> </span>-xzvf<span class="w"> </span>AMDTrainingExamples_ver0.2.tgz
+<span class="nb">cd</span><span class="w"> </span>AMDTrainingExamples/PragmaExamples
+module<span class="w"> </span>load<span class="w"> </span>siemens-gcc
+<span class="nb">export</span><span class="w"> </span><span class="nv">FC</span><span class="o">=</span>/global/software/siemens-gcc/bin/x86_64-none-linux-gnu-gfortran
+<span class="nb">cd</span><span class="w"> </span>OpenACC/Fortran/Make/vecadd
+</pre></div>
+</div>
+<p>Note in the comiler output:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>vecadd.F:50:62:<span class="w"> </span>optimized:<span class="w"> </span>assigned<span class="w"> </span>OpenACC<span class="w"> </span>gang<span class="w"> </span>vector<span class="w"> </span>loop<span class="w"> </span>parallelism
+</pre></div>
+</div>
+<p>Run the executable: <code class="docutils literal notranslate"><span class="pre">./vecadd</span></code></p>
+<p>Output:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Final<span class="w"> </span>result:<span class="w">   </span><span class="m">1</span>.000000
+Runtime<span class="w"> </span>is:<span class="w"> </span><span class="m">0</span>.102539<span class="w"> </span>secs
+</pre></div>
+</div>
+<p>Try setting:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">GCN_DEBUG</span><span class="o">=</span><span class="m">1</span>
+</pre></div>
+</div>
+<p>And rerun. You should get a lot of output which confirms that the code is running on the GPU.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../fortran/" class="btn btn-neutral float-left" title="Developing Fortran Applications: HIPFort, OpenMP®, and OpenACC" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../architecture/" class="btn btn-neutral float-right" title="Architecture" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, AMD.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

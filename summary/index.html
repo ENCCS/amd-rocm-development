@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Summary and outlook &mdash; Developing Applications with the AMD ROCm Ecosystem  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_lesson.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script data-domain="enccs.github.io/amd-rocm-development" defer="defer" src="https://plausible.io/js/script.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Quick Reference" href="../quick-reference/" />
+    <link rel="prev" title="Introduction to ML Frameworks" href="../ML_frameworks/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Developing Applications with the AMD ROCm Ecosystem
+              <img src="../_static/ENCCS.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro_hip/">Introduction to HIP Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../porting_hip/">Porting Applications to HIP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openMP/">Getting Started with OpenMP® Offload Applications on AMD Accelerators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fortran/">Developing Fortran Applications: HIPFort, OpenMP®, and OpenACC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exercises-1/">Exercises</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mpi/">GPU-Aware MPI with ROCmTM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory_model/">AMD Node Memory Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hierarchical_roofline/">Hierarchical Roofline on AMD InstinctTM MI200 GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../affinity/">Affinity — Placement, Ordering and Binding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../profilers/">Profiling and debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openMP_offload/">OpenMP Offload Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ML_frameworks/">Introduction to ML Frameworks</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Summary and outlook</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#amd-gpu-accelerated-applications-catalog">AMD GPU Accelerated Applications Catalog</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tools-and-libraries">Tools and Libraries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#reporting-issues">Reporting issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#additional-resources">Additional Resources</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quick-reference/">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/">Instructor’s guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Developing Applications with the AMD ROCm Ecosystem</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Summary and outlook</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/ENCCS/AMD-ROCm-development/blob/main/content/summary.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="summary-and-outlook">
+<h1>Summary and outlook<a class="headerlink" href="#summary-and-outlook" title="Permalink to this heading"></a></h1>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/sgqZqQm22V4?start=11491" title="Developing Applications with the AMD ROCm Ecosystem - Day 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<section id="amd-gpu-accelerated-applications-catalog">
+<h2>AMD GPU Accelerated Applications Catalog<a class="headerlink" href="#amd-gpu-accelerated-applications-catalog" title="Permalink to this heading"></a></h2>
+<p>Full list of AMD GPU Accelerated Application listed in the
+<a class="reference external" href="https://www.amd.com/system/files/documents/gpu-accelerated-applications-catalog.pdf">GPU accelerated applications catalog</a></p>
+<p>The list includes a lot of tools and libraries that can be useful to application developers.
+Here is the list of them from the catalog.</p>
+<p>Note that the level of support for AMD and by AMD varies a lot across the list.</p>
+<section id="tools-and-libraries">
+<h3>Tools and Libraries<a class="headerlink" href="#tools-and-libraries" title="Permalink to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Application Name</p></th>
+<th class="head"><p>Developer/Publisher</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>AMG Solve</p></td>
+<td><p>Lawrence Livermore National Library</p></td>
+<td><p>Parallel Algebraic Multigrid Solver library</p></td>
+</tr>
+<tr class="row-odd"><td><p>AMReX</p></td>
+<td><p>LBNL, NREL, and ANL</p></td>
+<td><p>Block-structured adaptive mesh refinement framework</p></td>
+</tr>
+<tr class="row-even"><td><p>Cosma</p></td>
+<td><p>ETH Zurich: Swiss Federal Institute of Technology in Zurich, <br> CSCS: Swiss National Computing Centre, <br> PASC: Platform for Advanced Scientific Computing, <br> ERC: European Research Council, MaX: Materials design at the Exascale</p></td>
+<td><p>Matrix-matrix multiplication algorithm.</p></td>
+</tr>
+<tr class="row-odd"><td><p>DBCSR</p></td>
+<td><p>CP2K Developers Group</p></td>
+<td><p>Sparse matrix-matrix multiplication and more.</p></td>
+</tr>
+<tr class="row-even"><td><p>Devito</p></td>
+<td><p>NUMFOCUS</p></td>
+<td><p>Domain-specific language (DSL) for finite difference kernels.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Ginkgo</p></td>
+<td><p>Karlsruhe Institute of Technology, University of Tennessee, Universitat Jaume I</p></td>
+<td><p>Sparse linear algebra library</p></td>
+</tr>
+<tr class="row-even"><td><p>Hashcat</p></td>
+<td><p>Jens ‘atom’ Steube, Gabriele ‘matrix’ Gristina</p></td>
+<td><p>Password recovery utility</p></td>
+</tr>
+<tr class="row-odd"><td><p>hipMagma</p></td>
+<td><p>The University of Tennessee</p></td>
+<td><p>Dense matrix algebra library</p></td>
+</tr>
+<tr class="row-even"><td><p>HPCToolkit</p></td>
+<td><p>Rice University</p></td>
+<td><p>Performance analysis tool</p></td>
+</tr>
+<tr class="row-odd"><td><p>HP Developer Tools</p></td>
+<td><p>HP</p></td>
+<td><p>Large toolsuite on HPE systems</p></td>
+</tr>
+<tr class="row-even"><td><p>Kokkos</p></td>
+<td><p>Sandia</p></td>
+<td><p>Portable programming model in C++</p></td>
+</tr>
+<tr class="row-odd"><td><p>PAPI</p></td>
+<td><p>Innovative Computing Laboratory at the University of Tennessee, Knoxville</p></td>
+<td><p>Profiling tool for performance counters</p></td>
+</tr>
+<tr class="row-even"><td><p>PYFR</p></td>
+<td><p>Engineering and Physical Sciences Research Council, Innovate UK, <br> the European Commission, BAE Systems, Airbus, <br> and the Air Force Office of Scientific Research. <br> We are also grateful for hardware donations from Nvidia, Intel, and AMD.</p></td>
+<td><p>Python framework for advection-diffusion problems</p></td>
+</tr>
+<tr class="row-odd"><td><p>Raja</p></td>
+<td><p>Lawrence Livermore National Library</p></td>
+<td><p>Portable programming abstractions for C++</p></td>
+</tr>
+<tr class="row-even"><td><p>SIRIUS</p></td>
+<td><p>SFI Centre for Research-based Innovation, University of Oslo</p></td>
+<td><p>Scalable data access for oil and gas.</p></td>
+</tr>
+<tr class="row-odd"><td><p>SLATE</p></td>
+<td><p>Innovative Computing Laboratory, Exascale Computing Project</p></td>
+<td><p>Dense linear algebra and more</p></td>
+</tr>
+<tr class="row-even"><td><p>TAU</p></td>
+<td><p>University of Oregon Performance Research Lab <br> The LANL Advanced Computing Laboratory, <br> and the Research Centre Jülich at ZAM, Germany.</p></td>
+<td><p>Performance analysis tool</p></td>
+</tr>
+<tr class="row-odd"><td><p>Totalview</p></td>
+<td><p>Perforce</p></td>
+<td><p>Debugging tool</p></td>
+</tr>
+<tr class="row-even"><td><p>Trace Compass</p></td>
+<td><p>Eclipse</p></td>
+<td><p>Trace analysis tool</p></td>
+</tr>
+<tr class="row-odd"><td><p>Vampir</p></td>
+<td><p>Center for Applied Mathematics of Research Centre Jülich <br> and the Center for High Performance Computinn of the Technische Universität Dresden</p></td>
+<td><p>Performance analysis tool</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="reporting-issues">
+<h2>Reporting issues<a class="headerlink" href="#reporting-issues" title="Permalink to this heading"></a></h2>
+<p><strong>Recommendation for best tracking of issues</strong>:</p>
+<ul class="simple">
+<li><p>Report to your primary site</p>
+<ul>
+<li><p>LUMI</p></li>
+<li><p>KTH</p></li>
+</ul>
+</li>
+</ul>
+<p><strong>Research projects (omnitrace, omniperf) are tracking github issues.</strong></p>
+<p><strong>Siemens compiler is still in development:</strong></p>
+<ul class="simple">
+<li><p>Issues should be reported to AMD team and they will pass it on to Siemens</p></li>
+<li><p>Once the code gets upstreamed, it will be the regular GCC issues path</p></li>
+</ul>
+<p><strong>Can report to AMD staff for help on proper reporting path.</strong></p>
+</section>
+<section id="additional-resources">
+<h2>Additional Resources<a class="headerlink" href="#additional-resources" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>LAB-NOTES: New “lab-notes” series on <a class="reference external" href="https://GPUOpen.com">GPUOpen.com</a></p>
+<ul>
+<li><p>Finite Difference Method – Laplacian Part 1 of a series</p></li>
+<li><p>AMD Matrix Cores – using the matrix math operations</p></li>
+<li><p><a class="reference external" href="https://gpuopen.com/?s=lab+notes">Search “lab notes”</a> for all articles in the series</p></li>
+<li><p>Will be released on a two-week cadence</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://developer.amd.com">Developer resources</a></p>
+<ul>
+<li><p>Videos on HIP and GPU programming</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://docs.amd.com">ROCm documentation</a></p></li>
+<li><p>Quick start guides at Oak Ridge National Laboratory</p>
+<ul>
+<li><p><a class="reference external" href="https://docs.olcf.ornl.gov/systems/crusher_quick_start_guide.html">Crusher quick-start guide</a></p></li>
+<li><p><a class="reference external" href="https://docs.olcf.ornl.gov/systems/frontier_user_guide.html">Frontier user guide</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://www.amd.com/en/technologies/infinity-hub">Infinity Hub</a> with many popular applications ported to AMD GPUs</p></li>
+<li><p>AMD Cloud resources for trying out AMD systems</p>
+<ul>
+<li><p><a class="reference external" href="https://acp.amd.com">AMD Cloud Platform (ACP)</a></p></li>
+<li><p><a class="reference external" href="https://www.amd.com/en/solutions/accelerated-computing">AMD Accelerator Cloud (AAC)</a></p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../ML_frameworks/" class="btn btn-neutral float-left" title="Introduction to ML Frameworks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../quick-reference/" class="btn btn-neutral float-right" title="Quick Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, AMD.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

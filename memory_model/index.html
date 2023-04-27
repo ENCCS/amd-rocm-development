@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AMD Node Memory Model &mdash; Developing Applications with the AMD ROCm Ecosystem  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_lesson.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script data-domain="enccs.github.io/amd-rocm-development" defer="defer" src="https://plausible.io/js/script.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Hierarchical Roofline on AMD InstinctTM MI200 GPUs" href="../hierarchical_roofline/" />
+    <link rel="prev" title="GPU-Aware MPI with ROCmTM" href="../mpi/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Developing Applications with the AMD ROCm Ecosystem
+              <img src="../_static/ENCCS.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro_hip/">Introduction to HIP Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../porting_hip/">Porting Applications to HIP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openMP/">Getting Started with OpenMP® Offload Applications on AMD Accelerators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fortran/">Developing Fortran Applications: HIPFort, OpenMP®, and OpenACC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exercises-1/">Exercises</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mpi/">GPU-Aware MPI with ROCmTM</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">AMD Node Memory Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#exercises">Exercises</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#managed-memory">Managed Memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#openmp-atomics">OpenMP Atomics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../hierarchical_roofline/">Hierarchical Roofline on AMD InstinctTM MI200 GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../affinity/">Affinity — Placement, Ordering and Binding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../profilers/">Profiling and debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openMP_offload/">OpenMP Offload Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ML_frameworks/">Introduction to ML Frameworks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../summary/">Summary and outlook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quick-reference/">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/">Instructor’s guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Developing Applications with the AMD ROCm Ecosystem</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">AMD Node Memory Model</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/ENCCS/AMD-ROCm-development/blob/main/content/memory_model.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="amd-node-memory-model">
+<h1>AMD Node Memory Model<a class="headerlink" href="#amd-node-memory-model" title="Permalink to this heading"></a></h1>
+<p><a class="reference download internal" download="" href="../_downloads/fae14b736b4f9b9784a8e878e13c7a70/AMDNodeMemoryModel.pdf"><code class="xref download docutils literal notranslate"><span class="pre">Slides</span></code></a></p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/R7Lj-oMF7-w?start=2160" title="Developing Applications with the AMD ROCm Ecosystem - Day 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading"></a></h2>
+<section id="managed-memory">
+<h3>Managed Memory<a class="headerlink" href="#managed-memory" title="Permalink to this heading"></a></h3>
+<p>We’ll use the examples in the AMDTrainingExamples from before</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tar</span> <span class="o">-</span><span class="n">xzvf</span> <span class="n">AMDTrainingExamples_ver0</span><span class="mf">.2</span><span class="o">.</span><span class="n">tgz</span>
+<span class="n">cd</span> <span class="n">AMDTrainingExamples</span><span class="o">/</span><span class="n">ManagedMemory</span>
+</pre></div>
+</div>
+<p>The example from HIP-Examples/vectorAdd has been duplicated here as vectoradd_hip.cpp. A slightly cleaned up version is in vectoradd_hip1.cpp. Check that you have the original version running first.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">module</span> <span class="n">load</span> <span class="n">rocm</span>
+<span class="n">make</span> <span class="n">vectoradd_hip1</span><span class="o">.</span><span class="n">exe</span>
+<span class="o">./</span><span class="n">vectoradd_hip1</span><span class="o">.</span><span class="n">exe</span>
+</pre></div>
+</div>
+<p>The original tests should run. If you encounter difficulties, you can check what is happening by setting the following environment variables.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export LIBOMPTARGET_KERNEL_TRACE=1
+export LIBOMPTARGET_INFO=$((0x20 | 0x02 | 0x01 | 0x10))
+</pre></div>
+</div>
+<p>Take that code and turn it into a managed memory version with the following steps:</p>
+<p>1.Globally change all “host” strings to “vector”
+2.Globally change all “device” strings to “vector”
+3.Remove duplicate float declarations
+4.Move both allocations above initialization loop
+5.Comment out all hip data copies from host to device and device to host
+6.Add hipDeviceSynchronize(); after the kerel launch</p>
+<ul class="simple">
+<li><p>First experiment:</p>
+<ul>
+<li><p>comment out the hipMalloc/hipFrees</p></li>
+<li><p>Test should fail with a memory access fault. Now set HSA_XNACK
+<code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">HSA_XNACK=1</span></code></p></li>
+</ul>
+</li>
+</ul>
+<p>Rerun and test should pass</p>
+<ul class="simple">
+<li><p>Second experiment:</p>
+<ul>
+<li><p>comment out the malloc/frees instead and unset the HSA_XNACK variable or set it to 0</p></li>
+<li><p>Test should pass</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="openmp-atomics">
+<h3>OpenMP Atomics<a class="headerlink" href="#openmp-atomics" title="Permalink to this heading"></a></h3>
+<p>The examples for this exercise are in <code class="docutils literal notranslate"><span class="pre">AMDTrainingExamples/atomics_openmp</span></code>.
+Set up your environment</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>module load aomp rocm
+export CC=${AOMP}/bin/clang
+</pre></div>
+</div>
+<p>Now let’s look at the first example. The key lines are:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#pragma omp target teams distribute parallel for map(tofrom: a[:n]) map(to: b[:n])</span>
+<span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+  <span class="p">}</span>
+</pre></div>
+</div>
+<p>Build the first example and run it. The map clause will copy the data from the host to device and back. The memory allocated will be coarse grain.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Make</span> <span class="n">arraysum1</span>
+<span class="o">./</span><span class="n">arraysum1</span>
+</pre></div>
+</div>
+<p>It should run and pass. Now make the following changes</p>
+<p>1.Remove map clause
+2.Add #pragma omp requires unified_shared_memory before main</p>
+<p>There is no memory movement so the system must move the memory for us. Let’s try it out.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">arraysum2</span>
+<span class="o">./</span><span class="n">arraysum2</span>
+</pre></div>
+</div>
+<p>It should fail because the memory has not moved. Setting HSA_XNACK should fix this problem.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">export</span> <span class="n">HSA_XNACK</span><span class="o">=</span><span class="mi">1</span>
+<span class="o">./</span><span class="n">arraysum2</span>
+</pre></div>
+</div>
+<p>It should run now. The memory that is created is now fine-grained. We can change this back to coarse-grained by adding back the map clause. This is done in <code class="docutils literal notranslate"><span class="pre">arraysum3.c</span></code>.
+Now let’s move the initialization to a separate routine and use the map clause so that it is created as coarse-grained memory.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">init</span><span class="p">(</span><span class="nb">int</span> <span class="n">n</span><span class="p">,</span> <span class="n">double</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="n">double</span> <span class="o">*</span><span class="n">b</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">#pragma omp target map(from:a[:n],b[:n])</span>
+<span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+  <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The main loop is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#pragma omp target teams distribute parallel for</span>
+<span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The memory in the main loop remains coarse-grained even though a map clause is not used. Once the memory is allocated, it stays that type. Note that the initialization loop is not run in parallel on the GPU. How would you fix that?</p>
+<p>We’ll skip ahead to the <code class="docutils literal notranslate"><span class="pre">arraysum8.c</span></code> with an atomic reduction. The key loop is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#pragma omp target teams distribute parallel for reduction(+:ret)</span>
+<span class="k">for</span><span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">#pragma omp atomic hint(AMD_fast_fp_atomics)</span>
+    <span class="n">ret</span> <span class="o">+=</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This test should fail because the memory is fine-grained. Add the map clause to the pragma as implemented in arraysum9.c. Note that the ret variable also needs to be mapped.
+<code class="docutils literal notranslate"><span class="pre">map(to:</span> <span class="pre">b[:n])</span> <span class="pre">map(tofrom:</span> <span class="pre">ret)</span></code></p>
+<p>Now compile and run. It should pass.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">arraysum9</span>
+<span class="o">./</span><span class="n">arraysum9</span>
+</pre></div>
+</div>
+<p>Another solution to fix the problem is to change the atomic pragma to a safe version. This is shown in arraysum10.c
+#pragma omp atomic hint(AMD_safe_fp_atomics)</p>
+<p>The safe atomic will use a compare and swap (CAS) loop instead of an atomic add. This will work, but it will likely be slower.</p>
+<p>The examples in arraysum4.c to arraysum7.c show the same atomic behavior with add the elements of array b to array a and storing it back to array a.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../mpi/" class="btn btn-neutral float-left" title="GPU-Aware MPI with ROCmTM" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../hierarchical_roofline/" class="btn btn-neutral float-right" title="Hierarchical Roofline on AMD InstinctTM MI200 GPUs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, AMD.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

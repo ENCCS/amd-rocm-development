@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Affinity — Placement, Ordering and Binding &mdash; Developing Applications with the AMD ROCm Ecosystem  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/togglebutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_lesson.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/sphinx_rtd_theme_ext_color_contrast.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/tabs.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/overrides.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/minipres.js"></script>
+        <script>let toggleHintShow = 'Click to show';</script>
+        <script>let toggleHintHide = 'Click to hide';</script>
+        <script>let toggleOpenOnPrint = 'true';</script>
+        <script src="../_static/togglebutton.js"></script>
+        <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+        <script data-domain="enccs.github.io/amd-rocm-development" defer="defer" src="https://plausible.io/js/script.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex/" />
+    <link rel="search" title="Search" href="../search/" />
+    <link rel="next" title="Profiling and debugging" href="../profilers/" />
+    <link rel="prev" title="Hierarchical Roofline on AMD InstinctTM MI200 GPUs" href="../hierarchical_roofline/" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../" class="icon icon-home">
+            Developing Applications with the AMD ROCm Ecosystem
+              <img src="../_static/ENCCS.jpg" class="logo" alt="Logo"/>
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search/" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">The lesson</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../intro_hip/">Introduction to HIP Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../porting_hip/">Porting Applications to HIP</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openMP/">Getting Started with OpenMP® Offload Applications on AMD Accelerators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fortran/">Developing Fortran Applications: HIPFort, OpenMP®, and OpenACC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../exercises-1/">Exercises</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../architecture/">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mpi/">GPU-Aware MPI with ROCmTM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../memory_model/">AMD Node Memory Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hierarchical_roofline/">Hierarchical Roofline on AMD InstinctTM MI200 GPUs</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Affinity — Placement, Ordering and Binding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#slides">Slides</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#exercises">Exercises</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../profilers/">Profiling and debugging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../openMP_offload/">OpenMP Offload Programming</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ML_frameworks/">Introduction to ML Frameworks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../summary/">Summary and outlook</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../quick-reference/">Quick Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../guide/">Instructor’s guide</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../">Developing Applications with the AMD ROCm Ecosystem</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Affinity — Placement, Ordering and Binding</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/ENCCS/AMD-ROCm-development/blob/main/content/affinity.md" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="affinity-placement-ordering-and-binding">
+<h1>Affinity — Placement, Ordering and Binding<a class="headerlink" href="#affinity-placement-ordering-and-binding" title="Permalink to this heading"></a></h1>
+<section id="slides">
+<h2>Slides<a class="headerlink" href="#slides" title="Permalink to this heading"></a></h2>
+<p><a class="reference download internal" download="" href="../_downloads/31fa764f599a6d9ddcb8ed99d2e8e238/Affinity_Placement_Order_Binding.pdf"><code class="xref download docutils literal notranslate"><span class="pre">Slides</span></code></a></p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/R7Lj-oMF7-w?start=8349" title="Developing Applications with the AMD ROCm Ecosystem - Day 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</section>
+<section id="exercises">
+<h2>Exercises<a class="headerlink" href="#exercises" title="Permalink to this heading"></a></h2>
+<p>=${OMPI_COMM_WORLD_RANK}
+export local_rank=${OMPI_COMM_WORLD_LOCAL_RANK}
+export ranks_per_node=${OMPI_COMM_WORLD_LOCAL_SIZE}</p>
+<p>if [ -z “${NUM_CPUS}” ]; then
+let NUM_CPUS=96
+fi</p>
+<p>if [ -z “${RANK_STRIDE}” ]; then
+let RANK_STRIDE=${NUM_CPUS}/${ranks_per_node}
+fi</p>
+<p>if [ -z “${OMP_STRIDE}” ]; then
+let OMP_STRIDE=1
+fi</p>
+<p>cpu_list=($(seq 0 ${NUM_CPUS}))
+let cpu_start_index=$(( ($RANK_STRIDE*${local_rank}) ))
+let cpu_start=${cpu_list[$cpu_start_index]}
+let cpu_stop=$(($cpu_start+$OMP_NUM_THREADS*$OMP_STRIDE-1))</p>
+<p>export GOMP_CPU_AFFINITY=$cpu_start-$cpu_stop:$OMP_STRIDE</p>
+<p>“$&#64;”</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+
+Run the application using the helper script: 
+
+`OMP_NUM_THREADS=2 mpirun -np 2 ./helper.sh ./hello_mpi_omp` 
+
+* You’ll find that the threads of ranks 0 and 1 got bound to HWTs 0, 1 and 48, 49 respectively 
+
+`OMP_NUM_THREADS=2 RANK_STRIDE=2 mpirun -np 2 ./helper.sh ./hello_mpi_omp` 
+
+* Setting RANK_STRIDE to 2 will pack all threads to HWTs 0, 1, 2, and 3. 
+
+</pre></div>
+</div>
+<p>OMP_NUM_THREADS=2 RANK_STRIDE=4 OMP_STRIDE=2 mpirun -np 2 ./helper.sh ./hello_mpi_omp</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+* By setting RANK_STRIDE=4 and OMP_STRIDE=2, we can run the threads on HWTs 0, 2, 4 and 6 respectively. 
+
+* Feel free to use this script on your own system by setting up NUM_CPUS accordingly. 
+
+The above example and script can be found in ~/exercises/affinity/hello_mpi_omp directory 
+
+##### Case 2: MPI + OpenMP + HIP 
+
+* Allocate a node: salloc -N1 --exclusive -p MI250 -w mun-node-5
+* Download hello_jobstep.cpp from here: https://code.ornl.gov/olcf/hello_jobstep 
+* Load necessary modules in the environment: module load rocm openmpi/4.1.4-gcc 
+* Use this simpler Makefile to compile: 
+
+$ cat Makefile  
+
+</pre></div>
+</div>
+<p>SOURCES = hello_jobstep.cpp
+OBJECTS = $(SOURCES:.cpp=.o)
+EXECUTABLE = hello_jobstep</p>
+<p>CXX=/global/software/openmpi/gcc/ompi/bin/mpic++
+CXXFLAGS = -fopenmp -I${ROCM_PATH}/include -D__HIP_PLATFORM_AMD__
+LDFLAGS = -L${ROCM_PATH}/lib -lhsa-runtime64 -lamdhip64</p>
+<p>all: ${EXECUTABLE}</p>
+<p>$(CXX) $(CXXFLAGS) -o $&#64; -c $&lt;</p>
+<p>$(EXECUTABLE): $(OBJECTS)
+$(CXX) $(CXXFLAGS) $(OBJECTS) -o $&#64; $(LDFLAGS)</p>
+<p>clean:<br />
+rm -f $(EXECUTABLE)
+rm -f $(OBJECTS)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+<span class="o">*</span> <span class="n">Compile</span><span class="p">:</span> <span class="n">make</span> 
+<span class="o">*</span> <span class="n">Set</span> <span class="n">up</span> <span class="n">helper</span> <span class="n">script</span> <span class="k">for</span> <span class="n">setting</span> <span class="n">up</span> <span class="n">ROCR_VISIBLE_DEVICES</span> <span class="ow">and</span> <span class="n">GOMP_CPU_AFFINITY</span> <span class="k">for</span> <span class="n">indicating</span> <span class="n">GPU</span> <span class="ow">and</span> <span class="n">CPU</span> <span class="n">core</span> <span class="n">affinity</span> <span class="n">respectively</span><span class="p">:</span> 
+
+</pre></div>
+</div>
+<p>#!/bin/bash
+export global_rank=${OMPI_COMM_WORLD_RANK}
+export local_rank=${OMPI_COMM_WORLD_LOCAL_RANK}
+export ranks_per_node=${OMPI_COMM_WORLD_LOCAL_SIZE}</p>
+<p>if [ -z “${NUM_CPUS}” ]; then
+let NUM_CPUS=128
+fi</p>
+<p>if [ -z “${RANK_STRIDE}” ]; then
+let RANK_STRIDE=${NUM_CPUS}/${ranks_per_node}
+fi</p>
+<p>if [ -z “${OMP_STRIDE}” ]; then
+let OMP_STRIDE=1
+fi</p>
+<p>if [ -z “${NUM_GPUS}” ]; then
+let NUM_GPUS=8
+fi</p>
+<p>if [ -z “${GPU_START}” ]; then
+let GPU_START=0
+fi</p>
+<p>if [ -z “${GPU_STRIDE}” ]; then
+let GPU_STRIDE=1
+fi</p>
+<p>cpu_list=($(seq 0 127))
+let cpus_per_gpu=${NUM_CPUS}/${NUM_GPUS}
+let cpu_start_index=$(( ($RANK_STRIDE*${local_rank})+${GPU_START}<em>$cpus_per_gpu ))
+let cpu_start=${cpu_list[$cpu_start_index]}
+let cpu_stop=$(($cpu_start+$OMP_NUM_THREADS</em>$OMP_STRIDE-1))</p>
+<p>gpu_list=(4 5 2 3 6 7 0 1)
+let ranks_per_gpu=$(((${ranks_per_node}+${NUM_GPUS}-1)/${NUM_GPUS}))
+let my_gpu_index=$(($local_rank*$GPU_STRIDE/$ranks_per_gpu))+${GPU_START}
+let my_gpu=${gpu_list[${my_gpu_index}]}</p>
+<p>export GOMP_CPU_AFFINITY=$cpu_start-$cpu_stop:$OMP_STRIDE
+export ROCR_VISIBLE_DEVICES=$my_gpu</p>
+<p>“$&#64;”</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+Run the application using the helper script: 
+
+`OMP_NUM_THREADS=2 mpirun -np 8 ./helper.sh ./hello_jobstep` 
+
+* Runs 2 threads per rank, 8 ranks, associating the GPUs in the order given for each rank and binding 2 CPU cores from each set of 16 cores for each rank 
+
+`OMP_NUM_THREADS=2 mpirun -np 16 ./helper.sh ./hello_jobstep` 
+
+* To run 2 ranks per GCD packed closely (ranks 0 and 1 run on GCD 4) and bind 2 cores from each set of 8 cores for each rank. 
+
+The above example and scripts can be found in ~/exercises/affinity/hello_jobstep directory. 
+
+
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../hierarchical_roofline/" class="btn btn-neutral float-left" title="Hierarchical Roofline on AMD InstinctTM MI200 GPUs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../profilers/" class="btn btn-neutral float-right" title="Profiling and debugging" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, AMD.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
